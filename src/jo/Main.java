@@ -6,6 +6,9 @@ public class Main {
 		System.out.println("asdf");
 		System.out.println("ye");
 		System.out.println("teste");
+		System.out.println("teste");
+		System.out.println("teste");
+		System.out.println("teste");
 	}
 	
 }
