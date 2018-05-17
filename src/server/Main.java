@@ -1,4 +1,4 @@
-package jo;
+package server;
 
 public class Main {
 
