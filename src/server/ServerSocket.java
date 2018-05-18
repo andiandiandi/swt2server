@@ -19,4 +19,8 @@ public class ServerSocket {
 		
 	}
 	
+	public void startGame(){
+		
+	}
+	
 }
