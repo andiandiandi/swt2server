@@ -1,5 +1,6 @@
 package utils;
 
+import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,9 +12,13 @@ public class Player extends User{
 	private List<Card> playerCards;
 	private int team;
 	
-	public Player(String username) {
-		super(username);
-		playerCards = new LinkedList<Card>();
+	public Player(String username,Socket socket){
+		super(username,socket);
+	}
+	
+	public Player(User user) {
+		super(user.getUsername(),user.getSocket());
+		super.gameState=user.gameState;
 	}
 
 	public void setCards(List<Card> cards){

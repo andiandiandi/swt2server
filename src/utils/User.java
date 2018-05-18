@@ -1,13 +1,18 @@
 package utils;
 
+import java.net.Socket;
+
 public class User {
 
-	private String username;
-	private int score;
-	private boolean readyForGame;
+	protected String username;
+	protected Socket socket;
 	
-	public User(String username){
+	protected int score;
+	protected GameStateE gameState;
+	
+	public User(String username,Socket socket){
 		this.username=username;
+		this.socket=socket;
 	}
 	
 	public String getUsername() {
@@ -23,14 +28,17 @@ public class User {
 		this.score = score;
 	}
 
-	public boolean isReadyForGame() {
-		return readyForGame;
+	public GameStateE getGameState() {
+		return gameState;
 	}
 
-	public void setReadyForGame(boolean readyForGame) {
-		this.readyForGame = readyForGame;
+	public void setGameState(GameStateE gameState) {
+		this.gameState = gameState;
 	}
 	
-	
-	
+	public Socket getSocket(){
+		return socket;
+	}
+
+
 }
