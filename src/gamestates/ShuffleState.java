@@ -47,7 +47,6 @@ public class ShuffleState extends GameSessionState {
 				out = new PrintWriter(p.getSocket().getOutputStream(), true);
 				out.println(toSend.toString());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

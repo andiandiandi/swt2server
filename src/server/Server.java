@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 import entities.User;
 import game.GameSession;
 
-public class GameServer {
+public class Server {
 
 	private String ip;
 	private int port = 25000;
@@ -23,7 +23,7 @@ public class GameServer {
 	private ServerSocket serverSocket;
 
 
-	public GameServer() {
+	public Server() {
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {

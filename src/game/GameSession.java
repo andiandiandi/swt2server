@@ -26,7 +26,7 @@ public class GameSession implements Runnable {
 	private PrintWriter out;
 	private BufferedReader in;
 	private GameSessionState state;
-	
+
 	public GameSession(List<ClientWorker> clientList, ServerThread serverThread) {
 		this.serverThread = serverThread;
 		playerList = new LinkedList<Player>();
@@ -45,22 +45,14 @@ public class GameSession implements Runnable {
 	@Override
 	public void run() {
 
-		//shuffle
-		state = new ShuffleState(playerList,cardGame);
+		// shufflen
+		state = new ShuffleState(playerList, cardGame);
 		state.execute();
-		
-		
 
 		while (true) {
-
-			
-			
-			
 
 		}
 
 	}
 
-	
-	
 }

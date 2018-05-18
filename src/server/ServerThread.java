@@ -15,9 +15,9 @@ public class ServerThread extends Thread{
 	private LinkedList<ClientWorker> queuedForGame;
 	private int maxPlayers = 80;
 	
-	private GameServer gameServer;
+	private Server gameServer;
 	
-	public ServerThread(GameServer gameServer) {
+	public ServerThread(Server gameServer) {
 		this.gameServer=gameServer;
 		userList = new LinkedList<User>();
 		queuedForGame = new LinkedList<ClientWorker>();
