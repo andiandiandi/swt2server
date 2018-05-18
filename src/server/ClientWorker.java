@@ -12,18 +12,22 @@ public class ClientWorker implements Runnable {
 
 	private User user;
 	private ServerThread serverThread;
-	
 
-	public ClientWorker(User user,ServerThread serverThread) {
-		this.user=user;
-		this.serverThread=serverThread;
+	private BufferedReader in = null;
+	private PrintWriter out = null;
+
+	private ClientStateE state;
+
+	public ClientWorker(User user, ServerThread serverThread) {
+		this.user = user;
+		this.serverThread = serverThread;
+
+		state = ClientStateE.LOBBY;
 	}
 
 	@Override
 	public void run() {
 		String line;
-		BufferedReader in = null;
-		PrintWriter out = null;
 		try {
 			in = new BufferedReader(new InputStreamReader(user.getSocket().getInputStream()));
 			out = new PrintWriter(user.getSocket().getOutputStream(), true);
@@ -34,11 +38,18 @@ public class ClientWorker implements Runnable {
 
 		while (true) {
 			try {
-				line = in.readLine();
-				System.out.println("incoming msg: " + line);
-				if(line.equals("start")){
-					System.out.println("queuing from clientworker");
-					serverThread.changeToReadyState(user);
+
+				if (state == ClientStateE.LOBBY) {
+
+					line = in.readLine();
+
+					if (line.equals("start")) {
+						System.out.println("queuing from clientworker");
+						serverThread.changeToReadyState(this);
+					}
+
+				} else if (state == ClientStateE.INGAME) {
+
 				}
 
 			} catch (IOException e) {
@@ -47,5 +58,13 @@ public class ClientWorker implements Runnable {
 			}
 		}
 
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void changeState(ClientStateE state) {
+		this.state = state;
 	}
 }

@@ -18,7 +18,6 @@ public class Player extends User{
 	
 	public Player(User user) {
 		super(user.getUsername(),user.getSocket());
-		super.gameState=user.gameState;
 	}
 
 	public void setCards(List<Card> cards){

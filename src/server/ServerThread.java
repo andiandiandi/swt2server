@@ -6,14 +6,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import game.GameSession;
-import utils.GameStateE;
 import utils.Player;
 import utils.User;
 
 public class ServerThread extends Thread{
 
 	private LinkedList<User> userList;
-	private LinkedList<User> queuedForGame;
+	private LinkedList<ClientWorker> queuedForGame;
 	private int maxPlayers = 80;
 	
 	private GameServer gameServer;
@@ -21,7 +20,7 @@ public class ServerThread extends Thread{
 	public ServerThread(GameServer gameServer) {
 		this.gameServer=gameServer;
 		userList = new LinkedList<User>();
-		queuedForGame = new LinkedList<User>();
+		queuedForGame = new LinkedList<ClientWorker>();
 	}
 
 	@Override
@@ -34,8 +33,8 @@ public class ServerThread extends Thread{
 				userList.add(user);
 				w = new ClientWorker(user,this);
 				System.out.println("client connected");
-				Thread t = new Thread(w);
-				t.start();
+				Thread thread = new Thread(w);
+				thread.start();
 			} catch (IOException e) {
 				System.out.println("Accept failed: 4444");
 				System.exit(-1);
@@ -45,33 +44,26 @@ public class ServerThread extends Thread{
 		
 	}
 	
-	public void changeToReadyState(User user){
-		System.out.println("size of queue: " + queuedForGame.size());
-		if(queuedForGame.size()<3){
-			user.setGameState(GameStateE.READY);
-			queuedForGame.add(user);
-			System.out.println("queud user: " + user.getUsername());
-		}else{
-			System.out.println("now have 4 clients ready up");
-			queuedForGame.add(user);
-			
-			//change gamestate to ingame & make users to players
-			List<Player> players = new LinkedList<Player>();
-			for(User u : queuedForGame){
-				u.setGameState(GameStateE.INGAME);
-				players.add(new Player(user));
-			}
-			
-			queuedForGame.clear();
-			
-			
-			//launch gameSession for 4 players
-			Thread gameSession = new Thread(new GameSession(players,this));
-			gameSession.start();
-			System.out.println("started gameSession");
+	public void changeToReadyState(ClientWorker client){
 		
+			queuedForGame.add(client);
+	
+			if(queuedForGame.size()<4){
+				System.out.println("added user");
+			}else{
+				for(ClientWorker c : queuedForGame){
+					c.changeState(ClientStateE.INGAME);
+				}
 			
-		}
+				//launch gameSession for 4 players
+				Thread gameSession = new Thread(new GameSession(queuedForGame,this));
+				gameSession.start();
+				
+				queuedForGame = new LinkedList<ClientWorker>();
+				System.out.println("started gameSession");
+			
+			}
+		
 	}
 	
 }

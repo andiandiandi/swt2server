@@ -12,7 +12,7 @@ public class CardGame {
 
 	
 	private CardGenerator cardGenerator;
-	private List<Card> cards;
+	
 	private List<Player> playerList;
 	
 	private Map<Player,List<Card>> stiche;
@@ -21,7 +21,6 @@ public class CardGame {
 		this.playerList=playerList;
 		stiche = new HashMap<Player,List<Card>>();
 		cardGenerator = new CardGenerator();
-		cards = cardGenerator.createCards();
 	}
 	
 
@@ -34,6 +33,7 @@ public class CardGame {
 	}
 	
 	public void shuffle(){
+		List<Card> cards = cardGenerator.createCards();
 		Collections.shuffle(cards);
 		int index = 0;
 		List<Card> playerCards = new LinkedList();
@@ -43,7 +43,6 @@ public class CardGame {
 				playerCards.add(cards.get(index++));
 			}
 			playerList.get(i).setCards(new LinkedList<Card>(playerCards));
-			
 		}
 	}
 	

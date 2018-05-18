@@ -8,7 +8,7 @@ public class User {
 	protected Socket socket;
 	
 	protected int score;
-	protected GameStateE gameState;
+	
 	
 	public User(String username,Socket socket){
 		this.username=username;
@@ -28,13 +28,7 @@ public class User {
 		this.score = score;
 	}
 
-	public GameStateE getGameState() {
-		return gameState;
-	}
 
-	public void setGameState(GameStateE gameState) {
-		this.gameState = gameState;
-	}
 	
 	public Socket getSocket(){
 		return socket;
