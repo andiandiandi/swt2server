@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import org.json.JSONObject;
+
+import entities.Player;
 import game.CardGame;
-import utils.Player;
 
 public abstract class GameSessionState{
 	
@@ -22,13 +24,6 @@ public abstract class GameSessionState{
 	
 	public abstract void execute();
 	
-	protected void writeMessage(Player player,String Message){
-		try {
-			out = new PrintWriter(player.getSocket().getOutputStream(),true);
-			out.println(Message);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
+
 }

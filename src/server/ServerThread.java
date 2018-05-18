@@ -5,9 +5,9 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
+import entities.Player;
+import entities.User;
 import game.GameSession;
-import utils.Player;
-import utils.User;
 
 public class ServerThread extends Thread{
 

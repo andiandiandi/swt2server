@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import entities.User;
 import game.GameSession;
-import utils.User;
 
 public class GameServer {
 

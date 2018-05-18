@@ -3,8 +3,8 @@ package game;
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.SymbolE;
-import utils.WertigkeitE;
+import entities.SymbolE;
+import entities.WertigkeitE;
 
 public class CardGenerator {
 

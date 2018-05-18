@@ -1,4 +1,4 @@
-package utils;
+package entities;
 
 import java.net.Socket;
 import java.util.LinkedList;

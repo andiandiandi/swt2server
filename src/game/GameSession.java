@@ -9,11 +9,11 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 
+import entities.Player;
 import gamestates.GameSessionState;
 import gamestates.ShuffleState;
 import server.ClientWorker;
 import server.ServerThread;
-import utils.Player;
 
 public class GameSession implements Runnable {
 
@@ -48,6 +48,8 @@ public class GameSession implements Runnable {
 		//shuffle
 		state = new ShuffleState(playerList,cardGame);
 		state.execute();
+		
+		
 
 		while (true) {
 
