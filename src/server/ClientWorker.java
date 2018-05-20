@@ -6,44 +6,54 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import org.json.JSONObject;
+
 import entities.User;
 
 public class ClientWorker implements Runnable {
 
+	private Socket socket;
 	private User user;
 	private ServerThread serverThread;
-
-	private BufferedReader in = null;
-	private PrintWriter out = null;
+	
+	private BufferedReader in;
+	private PrintWriter out;
 
 	private ClientStateE state;
 
-	public ClientWorker(User user, ServerThread serverThread) {
+	public ClientWorker(Socket socket,User user, ServerThread serverThread) {
+		this.socket = socket;
 		this.user = user;
 		this.serverThread = serverThread;
 
+		try {
+			out = new PrintWriter(socket.getOutputStream());
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		state = ClientStateE.LOBBY;
 	}
 
 	@Override
 	public void run() {
-		String line;
-		try {
-			in = new BufferedReader(new InputStreamReader(user.getSocket().getInputStream()));
-			out = new PrintWriter(user.getSocket().getOutputStream(), true);
-		} catch (IOException e) {
-			System.out.println("in or out failed");
-			System.exit(-1);
-		}
+
+		String request = "";
+
 
 		while (true) {
 			try {
 
 				if (state == ClientStateE.LOBBY) {
 
-					line = in.readLine();
+					request = in.readLine();
 
-					if (line.equals("start")) {
+					JSONObject json = new JSONObject(request);
+					String jsonParsed = json.getString("event");
+
+					if (jsonParsed.equals("queueForGame")) {
 						System.out.println("queuing from clientworker");
 						serverThread.changeToReadyState(this);
 					}
@@ -59,6 +69,15 @@ public class ClientWorker implements Runnable {
 		}
 
 	}
+
+	public PrintWriter getWriter(){
+		return out;
+	}
+	
+	public BufferedReader getReader(){
+		return in;
+	}
+
 
 	public User getUser() {
 		return user;

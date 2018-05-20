@@ -12,14 +12,15 @@ public class Player extends User{
 	private List<Card> playerCards;
 	private int team;
 	
-	public Player(String username,Socket socket){
-		super(username,socket);
+	public Player(String username){
+		super(username);
 	}
 	
 	public Player(User user) {
-		super(user.getUsername(),user.getSocket());
+		super(user.getUsername());
 	}
 
+	
 	public void setCards(List<Card> cards){
 		playerCards = new LinkedList<Card>(cards);
 	}

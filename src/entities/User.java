@@ -1,18 +1,19 @@
 package entities;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class User {
 
 	protected String username;
-	protected Socket socket;
-	
 	protected int score;
 	
 	
-	public User(String username,Socket socket){
+	public User(String username){
 		this.username=username;
-		this.socket=socket;
 	}
 	
 	public String getUsername() {
@@ -27,12 +28,5 @@ public class User {
 	public void setScore(int score) {
 		this.score = score;
 	}
-
-
-	
-	public Socket getSocket(){
-		return socket;
-	}
-
 
 }

@@ -1,23 +1,20 @@
 package gamestates;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-
-import org.json.JSONObject;
+import java.util.Map;
 
 import entities.Player;
 import game.CardGame;
+import server.ClientWorker;
 
 public abstract class GameSessionState{
 	
-	protected List<Player> playerList;
+	protected Map<Player,ClientWorker> playerList;
 	protected CardGame cardGame;
-	protected PrintWriter out;
-	protected BufferedReader in;
+
 	
-	public GameSessionState(List<Player> playerList,CardGame cardGame) {
+	public GameSessionState(Map<Player,ClientWorker> playerList,CardGame cardGame) {
 		this.playerList=playerList;
 		this.cardGame=cardGame;
 	}

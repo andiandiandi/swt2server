@@ -17,7 +17,7 @@ import game.GameSession;
 
 public class Server {
 
-	private String ip;
+	private String ip = "localhost";
 	private int port = 25000;
 
 	private ServerSocket serverSocket;

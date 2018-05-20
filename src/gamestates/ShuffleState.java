@@ -1,8 +1,6 @@
 package gamestates;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -10,10 +8,11 @@ import org.json.JSONObject;
 import entities.Player;
 import game.Card;
 import game.CardGame;
+import server.ClientWorker;
 
 public class ShuffleState extends GameSessionState {
 
-	public ShuffleState(List<Player> playerList, CardGame cardGame) {
+	public ShuffleState(Map<Player,ClientWorker> playerList, CardGame cardGame) {
 		super(playerList, cardGame);
 	}
 
@@ -28,7 +27,7 @@ public class ShuffleState extends GameSessionState {
 
 		Card card = null;
 
-		for (Player p : playerList) {
+		for (Player p : playerList.keySet()) {
 			jsonArr = new JSONArray();
 			toSend = new JSONObject();
 
@@ -43,12 +42,10 @@ public class ShuffleState extends GameSessionState {
 			}
 
 			toSend.put("cards", jsonArr);
-			try {
-				out = new PrintWriter(p.getSocket().getOutputStream(), true);
-				out.println(toSend.toString());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			
+			playerList.get(p).getWriter().println(toSend.toString());
+			playerList.get(p).getWriter().flush();
+			
 		}
 
 	}
