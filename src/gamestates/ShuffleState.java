@@ -1,5 +1,6 @@
 package gamestates;
 
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -8,11 +9,14 @@ import org.json.JSONObject;
 import entities.Player;
 import game.Card;
 import game.CardGame;
+import server.JSONActionsE;
+import server.JSONAttributesE;
 import server.ClientWorker;
+import server.JSONEventsE;
 
 public class ShuffleState extends GameSessionState {
 
-	public ShuffleState(Map<Player,ClientWorker> playerList, CardGame cardGame) {
+	public ShuffleState(List<Player> playerList, CardGame cardGame) {
 		super(playerList, cardGame);
 	}
 
@@ -27,25 +31,23 @@ public class ShuffleState extends GameSessionState {
 
 		Card card = null;
 
-		for (Player p : playerList.keySet()) {
+		for (Player p : playerList) {
 			jsonArr = new JSONArray();
 			toSend = new JSONObject();
 
-			toSend.put("call", "shuffle");
+			toSend.put(JSONActionsE.EVENT.name(), JSONEventsE.SHUFFLE.name());
 
 			for (int i = 0; i < 10; i++) {
 				cards = new JSONObject();
 				card = p.getCards().get(i);
-				cards.put("wertigkeit", card.getWertigkeit().name());
-				cards.put("symbol", card.getSymbol().name());
+				cards.put(entities.Card.WERTIGKEIT.name(), card.getWertigkeit().name());
+				cards.put(entities.Card.SYMBOL.name(), card.getSymbol().name());
 				jsonArr.put(cards);
 			}
 
-			toSend.put("cards", jsonArr);
-			
-			playerList.get(p).getWriter().println(toSend.toString());
-			playerList.get(p).getWriter().flush();
-			
+			toSend.put(JSONAttributesE.CARDS.name(), jsonArr);
+
+			p.sendMessage(toSend.toString());
 		}
 
 	}

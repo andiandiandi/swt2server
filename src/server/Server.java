@@ -11,8 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import entities.User;
 import game.GameSession;
 
 public class Server {
@@ -21,7 +19,6 @@ public class Server {
 	private int port = 25000;
 
 	private ServerSocket serverSocket;
-
 
 	public Server() {
 		try {
@@ -38,12 +35,11 @@ public class Server {
 		ServerThread serverThread = new ServerThread(this);
 		serverThread.setName("Server");
 		serverThread.start();
-	
+
 	}
 
-	public ServerSocket getServerSocket(){
+	public ServerSocket getServerSocket() {
 		return serverSocket;
 	}
 
-	
 }

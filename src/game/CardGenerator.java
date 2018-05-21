@@ -13,25 +13,23 @@ public class CardGenerator {
 	public CardGenerator() {
 		cards = new ArrayList<Card>();
 	}
-	
-	public List<Card> createCards(){
-		if(!cards.isEmpty())
+
+	public List<Card> createCards() {
+		if (!cards.isEmpty())
 			return cards;
-		else{
-			
+		else {
+
 			String[] wertigkeiten = WertigkeitE.getValues();
-			
-			for(int i=0;i<wertigkeiten.length;i++){
-				for(int j=0;j<2;j++){					
-					cards.add(new Card(SymbolE.HERZ,WertigkeitE.valueOf(wertigkeiten[i])));
-					cards.add(new Card(SymbolE.KARO,WertigkeitE.valueOf(wertigkeiten[i])));
-					cards.add(new Card(SymbolE.KREUZ,WertigkeitE.valueOf(wertigkeiten[i])));
-					cards.add(new Card(SymbolE.PIK,WertigkeitE.valueOf(wertigkeiten[i])));
+
+			for (int i = 0; i < wertigkeiten.length; i++) {
+				for (int j = 0; j < 2; j++) {
+					cards.add(new Card(SymbolE.HERZ, WertigkeitE.valueOf(wertigkeiten[i])));
+					cards.add(new Card(SymbolE.KARO, WertigkeitE.valueOf(wertigkeiten[i])));
+					cards.add(new Card(SymbolE.KREUZ, WertigkeitE.valueOf(wertigkeiten[i])));
+					cards.add(new Card(SymbolE.PIK, WertigkeitE.valueOf(wertigkeiten[i])));
 				}
 			}
 
-			
-			
 			return cards;
 		}
 	}

@@ -16,60 +16,54 @@ import org.json.JSONObject;
 import entities.Player;
 import gamestates.GameSessionState;
 import gamestates.ShuffleState;
+import javafx.event.ActionEvent;
+import server.JSONActionsE;
 import server.ClientWorker;
+import server.JSONEventsE;
+import server.Lobby;
 import server.ServerThread;
 
 public class GameSession implements Runnable {
 
-	private int maxRoundTime;
-
-	private ServerThread serverThread;
-
+	private Lobby lobby;
 	private CardGame cardGame;
-	private PrintWriter out;
-	private BufferedReader in;
+
 	private GameSessionState state;
 
-	private Map<Player,ClientWorker> playerMap;
-	
-	public GameSession(List<ClientWorker> clientList, ServerThread serverThread) {
-		this.serverThread = serverThread;
-		
-		playerMap = new HashMap<Player,ClientWorker>();
+	private List<Player> playerList;
 
-		out = null;
-		in = null;
+	public GameSession(List<ClientWorker> clientList, Lobby lobby) {
+
+		this.lobby = lobby;
+
+		playerList = new LinkedList<Player>();
 
 		for (ClientWorker cw : clientList) {
-			Player p = new Player(cw.getUser());
-			playerMap.put(p, cw);
+			playerList.add(new Player(cw));
 		}
 
-		cardGame = new CardGame(new LinkedList<Player>(playerMap.keySet()));
+		cardGame = new CardGame(playerList);
+
 	}
 
 	@Override
 	public void run() {
 
-		for(ClientWorker p : playerMap.values()){
-			JSONObject json = new JSONObject();
-			json.put("event","gameStarted");
-			p.getWriter().println(json.toString());
-			p.getWriter().flush();
-		}
-		
-		// shufflen
-		state = new ShuffleState(playerMap, cardGame);
+		notifyGameStart();
+		state = new ShuffleState(playerList, cardGame);
 		state.execute();
 
-		// anfragen ob jemand solo/hochzeit etc. spielen will
+	}
 
-		while (true) {
+	private void notifyGameStart() {
 
-			// frage spieler nacheinander nach ihrem zug
+		JSONObject json = new JSONObject();
+		json.put(JSONActionsE.EVENT.name(), JSONEventsE.GAMESTART.name());
+		String notification = json.toString();
 
+		for (Player p : playerList) {
+			p.sendMessage(notification);
 		}
-
 	}
 
 }

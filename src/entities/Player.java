@@ -1,23 +1,28 @@
 package entities;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 
 import game.Card;
+import server.ClientWorker;
 
-public class Player extends User{
+public class Player{
 
 
 	private List<Card> playerCards;
-	private int team;
+	private Socket socket;
 	
-	public Player(String username){
-		super(username);
-	}
+	private BufferedReader reader;
+	private ClientWorker cw;
 	
-	public Player(User user) {
-		super(user.getUsername());
+	public Player(ClientWorker cw) {
+		this.cw = cw;
+		socket = cw.getSocket();
+		reader = cw.getReader();
 	}
 
 	
@@ -31,6 +36,19 @@ public class Player extends User{
 	
 	public void removeCard(Card card){
 		
+	}
+	
+	public void sendMessage(String message){
+		cw.sendMessage(message);
+	}
+	
+	public String readMessage(){
+		try {
+			return reader.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 	
 }
