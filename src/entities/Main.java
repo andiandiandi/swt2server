@@ -1,4 +1,6 @@
-package server;
+package entities;
+
+import server.Server;
 
 public class Main {
 

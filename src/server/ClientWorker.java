@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Random;
 
 public class ClientWorker {
 
@@ -14,11 +15,20 @@ public class ClientWorker {
 	private BufferedReader reader;
 
 	private String username;
-	private int score;
+	private Statistic statistic;
 	private boolean ingame;
 
 	public ClientWorker(Socket socket) {
 		this.socket = socket;
+		
+		statistic = new Statistic();
+		
+		Random random = new Random();
+
+		statistic.setGames(random.nextInt(15));
+		statistic.setWins(random.nextInt(15));
+		statistic.setLost(random.nextInt(15));
+		statistic.setScore(random.nextInt(500));
 
 		try {
 			writer = new PrintWriter(socket.getOutputStream());
@@ -33,7 +43,7 @@ public class ClientWorker {
 		return socket;
 	}
 
-	public void sendMessage(String message){
+	public void sendMessage(String message) {
 		writer.println(message);
 		writer.flush();
 	}
@@ -58,12 +68,8 @@ public class ClientWorker {
 		this.username = username;
 	}
 
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
+	public Statistic getStatistic() {
+		return statistic;
 	}
 
 }
