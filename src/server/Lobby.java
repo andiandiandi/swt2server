@@ -34,9 +34,29 @@ public class Lobby {
 
 	private void setUsersToIngame(List<ClientWorker> queue) {
 
+		boolean found;
+		System.out.println("setusers..");
+
+		for (ClientWorker temp : queue) {
+			temp.setIngame(true);
+			LobbyHandler temp_lobbyHandler = users.get(temp);
+			temp_lobbyHandler.setGameStarted();
+			temp_lobbyHandler.stop();
+			temp_lobbyHandler = null;
+		}
+
+		for (ClientWorker cw : users.keySet()) {
+
+			if (!cw.isIngame()) {
+				System.out.println("updating userlist for user: " + cw.getUsername());
+				updateUserListClientside(cw);
+			}
+
+		}
+
 	}
 
-	public synchronized void queue(ClientWorker cw) {
+	public synchronized boolean queue(ClientWorker cw) {
 
 		if (queue.contains(cw)) {
 			JSONObject json = new JSONObject();
@@ -44,18 +64,34 @@ public class Lobby {
 			json.put(JSONEventsE.FAIL.name(), JSONLobbyAttributes.ALREADYQUEUED.name());
 
 			cw.sendMessage(json.toString());
-			
-			return;
+
+			return false;
 		}
 
 		queue.add(cw);
 
 		if (queue.size() == 4) {
-			setUsersToIngame(queue);
+			System.out.println("setting users to ingame");
 
-			new Thread(new GameSession(queue, this)).start();
+			new Thread(new Runnable() {
 
-			queue.clear();
+				@Override
+				public void run() {
+					setUsersToIngame(queue);
+					System.out.println("after setting users to ingame");
+					new Thread(new GameSession(queue)).start();
+					queue.clear();
+					for (ClientWorker temp : users.keySet()) {
+						if (!temp.isIngame()) {
+							updateUserQueueClientside(temp);
+						}
+					}
+				}
+
+			}).start();
+
+			return true;
+
 		} else {
 			JSONObject json = new JSONObject();
 			json.put(JSONActionsE.EVENT.name(), JSONEventsE.QUEUENUMBER.name());
@@ -64,6 +100,7 @@ public class Lobby {
 				temp.sendMessage(json.toString());
 			}
 		}
+		return false;
 	}
 
 	void updateUserListClientside(ClientWorker cw) {

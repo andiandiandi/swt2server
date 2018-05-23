@@ -6,6 +6,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import entities.CardE;
 import entities.Player;
 import game.Card;
 import game.CardGame;
@@ -40,8 +41,8 @@ public class ShuffleState extends GameSessionState {
 			for (int i = 0; i < 10; i++) {
 				cards = new JSONObject();
 				card = p.getCards().get(i);
-				cards.put(entities.Card.WERTIGKEIT.name(), card.getWertigkeit().name());
-				cards.put(entities.Card.SYMBOL.name(), card.getSymbol().name());
+				cards.put(CardE.WERTIGKEIT.name(), card.getWertigkeit().name());
+				cards.put(CardE.SYMBOL.name(), card.getSymbol().name());
 				jsonArr.put(cards);
 			}
 

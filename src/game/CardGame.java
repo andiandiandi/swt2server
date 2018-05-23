@@ -36,7 +36,7 @@ public class CardGame {
 		List<Card> cards = cardGenerator.createCards();
 		Collections.shuffle(cards);
 		int index = 0;
-		List<Card> playerCards = new LinkedList();
+		List<Card> playerCards = new LinkedList<Card>();
 		for(int i=0;i<4;i++){
 			playerCards.clear();
 			for(int j=0;j<10;j++){

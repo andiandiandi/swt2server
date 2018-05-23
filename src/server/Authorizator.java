@@ -22,8 +22,9 @@ public class Authorizator extends Thread {
 	@Override
 	public void run() {
 		while (true) {
-			try {
-				String loginData = cw.getReader().readLine();
+			String loginData = cw.readMessage();
+			if (loginData != null) {
+
 				JSONObject credentials = new JSONObject(loginData);
 
 				String event = credentials.getString(JSONActionsE.EVENT.name());
@@ -31,7 +32,6 @@ public class Authorizator extends Thread {
 				String password = credentials.getString(JSONAttributesE.PASSWORD.name());
 
 				if (event.equals(JSONEventsE.LOGIN.name()) && db.verifyUser(username, password)) {
-
 					JSONObject verify_login = new JSONObject();
 					verify_login.put(JSONActionsE.EVENT.name(), JSONEventsE.LOGIN.name());
 					verify_login.put(JSONEventsE.LOGIN.name(), JSONAttributesE.LOGINVERIFIED.name());
@@ -48,9 +48,6 @@ public class Authorizator extends Thread {
 					cw.sendMessage(verify_login.toString());
 
 				}
-
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
 		}
 	}

@@ -48,9 +48,15 @@ public class ClientWorker {
 		writer.flush();
 	}
 
-	public BufferedReader getReader() {
-		return reader;
+	public String readMessage(){
+		try {
+			return reader.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
+	
 
 	public void setIngame(boolean ingame) {
 		this.ingame = ingame;

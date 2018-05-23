@@ -7,11 +7,12 @@ public class Database {
 
 	private static Database instance;
 
-	private Database() {
-	}
+	List<String> validUsernames;
+	private List<String> online;
 
-	public boolean verifyUser(String username,String password){
-		List<String> validUsernames = new LinkedList<String>();
+	private Database() {
+		online = new LinkedList<String>();
+		validUsernames = new LinkedList<String>();
 		validUsernames.add("a");
 		validUsernames.add("b");
 		validUsernames.add("c");
@@ -20,14 +21,27 @@ public class Database {
 		validUsernames.add("f");
 		validUsernames.add("g");
 		validUsernames.add("h");
-		
-		
-		for(String name : validUsernames){
-			if(username.equals(name))
-				return true;
+
+	}
+
+	public boolean verifyUser(String username, String password) {
+
+		boolean alreadyLoggedIn = isLoggedIn(username);
+
+		if (!alreadyLoggedIn) {
+			for (String name : validUsernames) {
+				if (username.equals(name)){
+					online.add(username);
+					return true;
+				}
+			}
 		}
-		
+
 		return false;
+	}
+
+	private boolean isLoggedIn(String username) {
+		return online.contains(username);
 	}
 
 	public static Database getInstance() {
