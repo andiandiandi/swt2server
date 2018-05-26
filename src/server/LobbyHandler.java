@@ -32,15 +32,17 @@ public class LobbyHandler extends Thread {
 				} else if (action.equals(JSONEventsE.QUEUENUMBER.name())) {
 					lobby.updateUserQueueClientside(cw);
 				} else if (action.equals(JSONEventsE.QUEUEFORGAME.name())) {
-					gameStarted = lobby.queue(cw);
+					lobby.queue(cw);
+				}else if (action.equals(JSONEventsE.FLUSH.name())) {
+					gameStarted = true;
 				}
 			}
 
 		}
 	}
 
-	public void setGameStarted() {
-		this.gameStarted = true;
+	public boolean readyToShutdown(){
+		return gameStarted;
 	}
-
+	
 }

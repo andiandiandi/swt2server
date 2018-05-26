@@ -11,6 +11,7 @@ public class Authorizator extends Thread {
 	private ClientWorker cw;
 	private ServerThread serverThread;
 	private Database db;
+	private volatile boolean shouldStop = false;
 
 	public Authorizator(ClientWorker cw, ServerThread serverThread) {
 		this.cw = cw;
@@ -21,7 +22,7 @@ public class Authorizator extends Thread {
 
 	@Override
 	public void run() {
-		while (true) {
+		while (!shouldStop) {
 			String loginData = cw.readMessage();
 			if (loginData != null) {
 
@@ -40,6 +41,7 @@ public class Authorizator extends Thread {
 
 					cw.setUsername(username);
 					serverThread.verified(cw, this);
+
 				} else {
 					JSONObject verify_login = new JSONObject();
 					verify_login.put(JSONActionsE.EVENT.name(), JSONEventsE.LOGIN.name());
@@ -50,6 +52,11 @@ public class Authorizator extends Thread {
 				}
 			}
 		}
+	}
+
+	public void shutDown() {
+		shouldStop = true;
+
 	}
 
 }

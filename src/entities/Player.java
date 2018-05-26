@@ -32,8 +32,9 @@ public class Player{
 		return playerCards;
 	}
 
-	public void removeCard(Card card) {
-
+	public Card removeCard(Card card) {
+		playerCards.remove(card);
+		return card;
 	}
 
 	public void sendMessage(String message) {

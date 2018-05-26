@@ -34,13 +34,9 @@ public class Lobby {
 
 	private void setUsersToIngame(List<ClientWorker> queue) {
 
-		boolean found;
-		System.out.println("setusers..");
-
 		for (ClientWorker temp : queue) {
 			temp.setIngame(true);
 			LobbyHandler temp_lobbyHandler = users.get(temp);
-			temp_lobbyHandler.setGameStarted();
 			temp_lobbyHandler.stop();
 			temp_lobbyHandler = null;
 		}
@@ -48,7 +44,6 @@ public class Lobby {
 		for (ClientWorker cw : users.keySet()) {
 
 			if (!cw.isIngame()) {
-				System.out.println("updating userlist for user: " + cw.getUsername());
 				updateUserListClientside(cw);
 			}
 
@@ -56,7 +51,20 @@ public class Lobby {
 
 	}
 
-	public synchronized boolean queue(ClientWorker cw) {
+	private void askToFlush() {
+
+		for (ClientWorker client : queue) {
+
+			JSONObject json = new JSONObject();
+			json.put(JSONActionsE.EVENT.name(), JSONEventsE.FLUSH.name());
+
+			client.sendMessage(json.toString());
+
+		}
+
+	}
+
+	public synchronized void queue(ClientWorker cw) {
 
 		if (queue.contains(cw)) {
 			JSONObject json = new JSONObject();
@@ -65,22 +73,42 @@ public class Lobby {
 
 			cw.sendMessage(json.toString());
 
-			return false;
+			return;
 		}
 
 		queue.add(cw);
 
 		if (queue.size() == 4) {
-			System.out.println("setting users to ingame");
 
 			new Thread(new Runnable() {
 
 				@Override
 				public void run() {
+					askToFlush();
+
+					boolean repeat = true;
+					do {
+
+						for (ClientWorker temp : queue) {
+							if (users.get(temp).readyToShutdown()) {
+								repeat = false;
+							} else {
+								repeat = true;
+							}
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+					} while (repeat);
+
 					setUsersToIngame(queue);
-					System.out.println("after setting users to ingame");
+
 					new Thread(new GameSession(queue)).start();
+
 					queue.clear();
+
 					for (ClientWorker temp : users.keySet()) {
 						if (!temp.isIngame()) {
 							updateUserQueueClientside(temp);
@@ -90,7 +118,7 @@ public class Lobby {
 
 			}).start();
 
-			return true;
+			return;
 
 		} else {
 			JSONObject json = new JSONObject();
@@ -100,7 +128,6 @@ public class Lobby {
 				temp.sendMessage(json.toString());
 			}
 		}
-		return false;
 	}
 
 	void updateUserListClientside(ClientWorker cw) {

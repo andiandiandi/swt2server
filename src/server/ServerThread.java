@@ -28,13 +28,12 @@ public class ServerThread extends Thread {
 			ClientWorker cw;
 			Authorizator authorizator;
 			try {
-				
+
 				Socket client = gameServer.getServerSocket().accept();
 				cw = new ClientWorker(client);
-				authorizator = new Authorizator(cw,this);
+				authorizator = new Authorizator(cw, this);
 				authorizator.start();
-				
-				
+
 			} catch (IOException e) {
 				System.out.println("Accept failed: 4444");
 				System.exit(-1);
@@ -43,10 +42,18 @@ public class ServerThread extends Thread {
 
 	}
 
-	
-	public void verified(ClientWorker cw,Thread t){
+	public void verified(ClientWorker cw, Authorizator auth) {
 		lobby.addUser(cw);
-		t.stop();
+		auth.shutDown();
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				
+				auth.stop();
+				
+			}
+		}).start();
 	}
-	
+
 }

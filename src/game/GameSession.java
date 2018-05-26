@@ -12,11 +12,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.smartcardio.CardException;
+
 import org.json.JSONObject;
 
 import entities.CardE;
 import entities.Player;
 import entities.PlayerComparator;
+import gamestates.CardExchangeState;
 import gamestates.GameSessionState;
 import gamestates.PlayerOrderState;
 import gamestates.ShuffleState;
@@ -36,6 +39,8 @@ public class GameSession implements Runnable {
 	private GameSessionState state;
 
 	private List<Player> playerList;
+
+	private volatile boolean gameEnded = false;
 
 	public GameSession(List<ClientWorker> clientList) {
 
@@ -64,13 +69,18 @@ public class GameSession implements Runnable {
 		state = new PlayerOrderState(playerList, cardGame);
 		state.execute();
 
-		while (true) {
+		state = new CardExchangeState(playerList, cardGame);
 
-			for (Player player : playerList) {
-				getNextMove(player);
-			}
+		//checkForFlushes();
+		
+		while (!gameEnded) {
+
+			// equals 1 round
+			state.execute();
 
 		}
+
+		// spielauswertung (wer hat gewonnen)
 
 	}
 
@@ -83,7 +93,7 @@ public class GameSession implements Runnable {
 		player.sendMessage(notification);
 
 		boolean again = true;
-		
+
 		do {
 			String move = player.readMessage();
 			JSONObject json2 = new JSONObject(move);
@@ -106,6 +116,27 @@ public class GameSession implements Runnable {
 
 		for (Player p : playerList) {
 			p.sendMessage(notification);
+		}
+	}
+
+	private void checkForFlushes() {
+
+		for (Player player : playerList) {
+
+			boolean repeat = false;
+			do {
+				System.out.println("before toTest");
+				String toTest = player.readMessage();
+				System.out.println("toTest: " + toTest);
+				JSONObject json = new JSONObject(toTest);
+				String action = json.getString(JSONActionsE.EVENT.name());
+				if (action.equals(JSONEventsE.FLUSH.name())) {
+					repeat = true;
+					System.out.println("ate a flush from client: " + player.getUsername());
+				} else
+					repeat = false;
+			} while (repeat);
+
 		}
 	}
 
