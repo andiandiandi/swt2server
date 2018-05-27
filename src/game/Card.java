@@ -8,11 +8,13 @@ public class Card implements Comparable<Card> {
 	private SymbolE symbol;
 	private WertigkeitE wertigkeit;
 	private boolean trumpf;
+	private int value;
+	
 
 	public Card(SymbolE symbol, WertigkeitE wertigkeit, boolean trumpf) {
 		this.symbol = symbol;
 		this.wertigkeit = wertigkeit;
-		this.trumpf = trumpf;
+		this.trumpf = trumpf;	
 	}
 
 	public SymbolE getSymbol() {
@@ -60,4 +62,9 @@ public class Card implements Comparable<Card> {
 		return this.symbol == otherCard.symbol && this.wertigkeit == otherCard.wertigkeit;
 	}
 
+	public void calculateValue(){
+		
+		
+		
+	}
 }
