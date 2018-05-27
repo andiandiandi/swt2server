@@ -50,7 +50,7 @@ public class NormalCalculationMode extends CalculationMode {
 				}
 			}
 		}
-		return null;
+		return roundSpecificCards.keySet().iterator().next();
 	}
 	/**
 	 * Welcher Trumpf ist stärker?
