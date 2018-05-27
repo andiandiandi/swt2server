@@ -1,4 +1,4 @@
-package game;
+package game.calculationMode;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -6,11 +6,12 @@ import java.util.Map;
 import entities.Player;
 import entities.SymbolE;
 import entities.WertigkeitE;
+import game.Card;
 
 public class NormalCalculationMode extends CalculationMode {
 
 	private Map<Player, Card> roundSpecificCards;
-
+	
 	public NormalCalculationMode(Map<Player, Card> roundSpecificCards) {
 		this.roundSpecificCards = roundSpecificCards;
 	}
@@ -25,22 +26,20 @@ public class NormalCalculationMode extends CalculationMode {
 
 		Iterator<Player> it = roundSpecificCards.keySet().iterator();
 
-		Player winner = it.next();
-		Card winnerCard = roundSpecificCards.get(winner);
+		winner = it.next();
+		winnerCard = roundSpecificCards.get(winner);
 		while (it.hasNext()) {
 			Player temp = it.next();
 			Card tempCard = roundSpecificCards.get(temp);
 			// Trumpf schlägt Fehl
 			if (tempCard.isTrumpf() && !winnerCard.isTrumpf()) {
-				winner = temp;
-				winnerCard = tempCard;
+				setWinner(temp, tempCard);
 			}
 			if (winnerCard.isTrumpf() && tempCard.isTrumpf()) {
 				// Wenn die Trümpfe verschieden sind
 				if (!winnerCard.equals(tempCard)) {
 					if (compareTrumpfSymbole(winnerCard, tempCard) == 1) {
-						winner = temp;
-						winnerCard = tempCard;
+						setWinner(temp, tempCard);
 					}
 				}
 			}
@@ -49,8 +48,7 @@ public class NormalCalculationMode extends CalculationMode {
 			if (!winnerCard.isTrumpf() && !tempCard.isTrumpf()) {
 				if (tempCard.getSymbol() == winnerCard.getSymbol()) {
 					if (tempCard.getWertigkeit().ordinal() > winnerCard.getWertigkeit().ordinal()) {
-						winner = temp;
-						winnerCard = tempCard;
+						setWinner(temp, tempCard);
 					}
 				}
 			}

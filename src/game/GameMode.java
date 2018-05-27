@@ -1,6 +1,7 @@
 package game;
 
 import entities.Player;
+import game.calculationMode.CalculationMode;
 
 public class GameMode {
 	
@@ -18,11 +19,17 @@ public class GameMode {
 		}
 		return GameMode.instance;
 	}
-	
+	/**
+	 * Wurde ein besondees Spiel angesagt? Sonst normal
+	 * @param mode
+	 */
 	void setCalculationMode(CalculationMode mode){
 		this.calculationMode=mode;
 	}
-	
+	/**
+	 * 
+	 * @return Gibt den Sieger zurück
+	 */
 	public Player evaluateRound(){
 		return calculationMode.evaluateRound();
 	}

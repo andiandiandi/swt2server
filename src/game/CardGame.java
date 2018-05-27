@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import entities.Player;
+import game.calculationMode.CalculationMode;
 
 public class CardGame {
 
