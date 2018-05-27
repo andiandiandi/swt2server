@@ -2,6 +2,7 @@ package game;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +14,10 @@ public class CardGame {
 	private CardGenerator cardGenerator;
 
 	private List<Player> playerList;
-	// Stiche die Player geholt hat
+
 	private Map<Player, List<Card>> stiche;
-	// Karten in der Runde gespielt
-	private Map<Card, Player> roundSpecificCards;
+
+	private Map<Player,Card> roundSpecificCards;
 
 	private MoveValidator cardDeck;
 
@@ -24,7 +25,7 @@ public class CardGame {
 		this.playerList = playerList;
 		stiche = new HashMap<Player, List<Card>>();
 		cardGenerator = new CardGenerator();
-		roundSpecificCards = new HashMap<Card, Player>();
+		roundSpecificCards = new HashMap<Player,Card>();
 		cardDeck = new MoveValidator();
 	}
 
@@ -52,49 +53,41 @@ public class CardGame {
 			playerList.get(i).setCards(new LinkedList<Card>(playerCards));
 		}
 	}
-	/**
-	 * Auszählen nach Runde
-	 * @return
-	 */
+
 	public Player calculateWinner() {
 		return null;
 	}
-	/**
-	 * Checked, ob Valide Karte
-	 * @param card
-	 * @param player
-	 * @return
-	 */
-	public boolean validatePlayedCard(Card card,Player player) {
-		return cardDeck.validatePlayedCard(card,player);
+
+	public boolean validatePlayedCard(Card card, Player player) {
+		return cardDeck.validatePlayedCard(card, player);
 	}
-	/**
-	 * In der Runde gespielte Karte der Map hinzufügen
-	 * @param player
-	 * @param card
-	 */
+
 	public void addRoundSpecificCard(Player player, Card card) {
-		roundSpecificCards.put(card, player);
+		roundSpecificCards.put(player,card);
 	}
 	/**
-	 * Wertet Runde aus
+	 * 1. Trumpf H10 > D > B > > KA Ass > KA 10 > KA K 
+	 * 2. Fehl  Ass > 10 > K
 	 * @return
 	 */
 	public Player evaluateRound() {
 
-		Player to_return = null;
-
-		Card temp = null;
-
-		for (Card card : roundSpecificCards.keySet()) {
-			// code to evaluate winner
-			temp = card;
-			break;
-		}
-		// example: player 1 always wins
-		to_return = roundSpecificCards.get(temp);
-
-		return to_return;
+		Iterator<Player> it = roundSpecificCards.keySet().iterator();
+		
+		Player winner = it.next();
+		
+//		while(it.hasNext()){
+//			Player temp = it.next();
+//			if(roundSpecificCards.get(winner). < roundSpecificCards.get(temp)) {
+//				winner = temp;
+//			}
+//		}
+		
+		
+		
+		
+		
+		return null;
 	}
 
 }
