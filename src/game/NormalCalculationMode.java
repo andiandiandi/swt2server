@@ -5,6 +5,7 @@ import java.util.Map;
 
 import entities.Player;
 import entities.SymbolE;
+import entities.WertigkeitE;
 
 public class NormalCalculationMode extends CalculationMode {
 
@@ -37,35 +38,70 @@ public class NormalCalculationMode extends CalculationMode {
 			if (winnerCard.isTrumpf() && tempCard.isTrumpf()) {
 				// Wenn die Trümpfe verschieden sind
 				if (!winnerCard.equals(tempCard)) {
-					switch (compareTrumpfSymbole(winnerCard, tempCard)) {
-					case -1:
-						break;
-					case 0:
-						break;
-					case 1:
+					if (compareTrumpfSymbole(winnerCard, tempCard) == 1) {
 						winner = temp;
 						winnerCard = tempCard;
-						break;
+					}
+				}
+			}
+			// Beides Fehl: Wenn tempCard Symbol gleich, dann überprüfen, sonst bleibt der
+			// winner
+			if (!winnerCard.isTrumpf() && !tempCard.isTrumpf()) {
+				if (tempCard.getSymbol() == winnerCard.getSymbol()) {
+					if (tempCard.getWertigkeit().ordinal() > winnerCard.getWertigkeit().ordinal()) {
+						winner = temp;
+						winnerCard = tempCard;
 					}
 				}
 			}
 		}
-		return roundSpecificCards.keySet().iterator().next();
+		return winner;
 	}
+
 	/**
 	 * Welcher Trumpf ist stärker?
-	 * @param a 1. Karte
-	 * @param b 2. Karte
+	 * 
+	 * @param a
+	 *            1. Karte
+	 * @param b
+	 *            2. Karte
 	 * @return 0 = gleich, -1 = Karte a, 1 = Karte b
 	 */
 	private int compareTrumpfSymbole(Card a, Card b) {
-		if(a.getWertigkeit() == b.getWertigkeit()) {
-			if(a.getSymbol().ordinal() > b.getSymbol().ordinal()) {
+		if (a.getWertigkeit() == b.getWertigkeit()) {
+			if (a.getSymbol().ordinal() > b.getSymbol().ordinal()) {
 				return -1;
-			} else {
+			} else if (a.getSymbol().ordinal() < b.getSymbol().ordinal()) {
 				return 1;
-			}
+			} else
+				return 0;
 		}
+		int[][] valuesTrumpf = new int[4][];
+		// Dame = 20 Bube = 10 H10 = 100 KaroAss=3 Karo10=2 KaroK = 1
+		// Kreuz = 3, Pik = 2 Herz = 1 Karo = 0
+		for (int i = 0; i <= 3; i++) {
+			valuesTrumpf[i][WertigkeitE.BUBE.getNumVal()] = 20 + i;
+			valuesTrumpf[i][WertigkeitE.DAME.getNumVal()] = 10 + i;
+		}
+		valuesTrumpf[SymbolE.HERZ.ordinal()][WertigkeitE.ZEHN.getNumVal()] = 100;
+		valuesTrumpf[SymbolE.KARO.ordinal()][WertigkeitE.KOENIG.getNumVal()] = 1;
+		valuesTrumpf[SymbolE.KARO.ordinal()][WertigkeitE.ZEHN.getNumVal()] = 2;
+		// Schweinchen höchster Trumpf
+		if(a.isSchweinchen() || b.isSchweinchen()) {
+			valuesTrumpf[SymbolE.KARO.ordinal()][WertigkeitE.ASS.getNumVal()] = 150;
+		} else {
+			valuesTrumpf[SymbolE.KARO.ordinal()][WertigkeitE.ASS.getNumVal()] = 3;
+		}
+		
+		if (valuesTrumpf[a.getSymbol().ordinal()][a.getWertigkeit().ordinal()] < valuesTrumpf[b.getSymbol().ordinal()][b
+				.getWertigkeit().ordinal()]) {
+			return 1;
+		} else if (valuesTrumpf[a.getSymbol().ordinal()][a.getWertigkeit()
+				.ordinal()] > valuesTrumpf[b.getSymbol().ordinal()][b.getWertigkeit().ordinal()]) {
+
+			return -1;
+		}
+
 		return 0;
 	}
 

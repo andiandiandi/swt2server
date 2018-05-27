@@ -1,35 +1,18 @@
 package game;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
-import javax.smartcardio.CardException;
 
 import org.json.JSONObject;
 
-import entities.CardE;
 import entities.Player;
-import entities.PlayerComparator;
 import gamestates.CardExchangeState;
 import gamestates.GameSessionState;
 import gamestates.PlayerOrderState;
 import gamestates.ShuffleState;
-import javafx.event.ActionEvent;
-import server.JSONActionsE;
 import server.ClientWorker;
+import server.JSONActionsE;
 import server.JSONEventsE;
-import server.JSONIngameAttributes;
-import server.Lobby;
-import server.ServerThread;
 
 public class GameSession implements Runnable {
 

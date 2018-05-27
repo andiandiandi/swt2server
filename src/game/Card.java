@@ -1,7 +1,5 @@
 package game;
 
-import java.util.Collection;
-
 import entities.SymbolE;
 import entities.WertigkeitE;
 
@@ -10,12 +8,14 @@ public class Card implements Comparable<Card> {
 	private SymbolE symbol;
 	private WertigkeitE wertigkeit;
 	private boolean trumpf;
+	private boolean schweinchen;
 
 
 	public Card(SymbolE symbol, WertigkeitE wertigkeit, boolean trumpf) {
 		this.symbol = symbol;
 		this.wertigkeit = wertigkeit;
 		this.trumpf = trumpf;
+		setSchweinchen(false);
 	}
 
 	public SymbolE getSymbol() {
@@ -61,6 +61,14 @@ public class Card implements Comparable<Card> {
 	public boolean equals(Object obj) {
 		Card otherCard = (Card) obj;
 		return this.symbol == otherCard.symbol && this.wertigkeit == otherCard.wertigkeit;
+	}
+
+	public boolean isSchweinchen() {
+		return schweinchen;
+	}
+
+	public void setSchweinchen(boolean schweinchen) {
+		this.schweinchen = schweinchen;
 	}
 
 
