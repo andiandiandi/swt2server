@@ -1,5 +1,7 @@
 package game;
 
+import entities.Player;
+
 public class GameMode {
 	
 	
@@ -21,8 +23,8 @@ public class GameMode {
 		this.calculationMode=mode;
 	}
 	
-	public int calculate(Card card){
-		return calculationMode.calculateValue(card);
+	public Player evaluateRound(){
+		return calculationMode.evaluateRound();
 	}
 	
 }

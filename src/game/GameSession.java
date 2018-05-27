@@ -34,7 +34,6 @@ import server.ServerThread;
 public class GameSession implements Runnable {
 
 	private CardGame cardGame;
-	private GameMode gameMode;
 	
 	private GameSessionState state;
 
@@ -44,7 +43,6 @@ public class GameSession implements Runnable {
 
 	public GameSession(List<ClientWorker> clientList) {
 
-		gameMode = GameMode.getInstance();
 		
 		playerList = new LinkedList<Player>();
 
@@ -60,8 +58,7 @@ public class GameSession implements Runnable {
 	public void run() {
 
 		notifyGameStart();
-		gameMode.setCalculationMode(new NormalCalculationMode());
-		
+		cardGame.setGameMode(new NormalCalculationMode(cardGame.getRoundSpecificCards()));
 		
 		// shuffle
 		state = new ShuffleState(playerList, cardGame);
@@ -73,17 +70,20 @@ public class GameSession implements Runnable {
 
 		state = new CardExchangeState(playerList, cardGame);
 
-		//checkForFlushes();
 		
 		while (!gameEnded) {
 
 			// equals 1 round
-			state.execute();
+			if(((CardExchangeState) state).getRound()<=10){
+				state.execute();				
+			}else
+				gameEnded = true;
 
 		}
 
 		// spielauswertung (wer hat gewonnen)
-
+		
+		
 	}
 
 

@@ -17,16 +17,20 @@ public class CardGame {
 
 	private Map<Player, List<Card>> stiche;
 
-	private Map<Player,Card> roundSpecificCards;
+	private Map<Player, Card> roundSpecificCards;
 
-	private MoveValidator cardDeck;
+	private MoveValidator moveValidator;
+
+	private GameMode gameMode;
 
 	public CardGame(List<Player> playerList) {
 		this.playerList = playerList;
 		stiche = new HashMap<Player, List<Card>>();
 		cardGenerator = new CardGenerator();
-		roundSpecificCards = new HashMap<Player,Card>();
-		cardDeck = new MoveValidator();
+		roundSpecificCards = new HashMap<Player, Card>();
+		moveValidator = new MoveValidator();
+
+		gameMode = GameMode.getInstance();
 	}
 
 	public void updateCardGame() {
@@ -59,35 +63,25 @@ public class CardGame {
 	}
 
 	public boolean validatePlayedCard(Card card, Player player) {
-		return cardDeck.validatePlayedCard(card, player);
+		return moveValidator.validatePlayedCard(card, player);
 	}
 
 	public void addRoundSpecificCard(Player player, Card card) {
-		roundSpecificCards.put(player,card);
+		roundSpecificCards.put(player, card);
 	}
-	/**
-	 * 1. Trumpf H10 > D > B > > KA Ass > KA 10 > KA K 
-	 * 2. Fehl  Ass > 10 > K
-	 * @return
-	 */
+
 	public Player evaluateRound() {
 
-		Iterator<Player> it = roundSpecificCards.keySet().iterator();
-		
-		Player winner = it.next();
-		
-//		while(it.hasNext()){
-//			Player temp = it.next();
-//			if(roundSpecificCards.get(winner). < roundSpecificCards.get(temp)) {
-//				winner = temp;
-//			}
-//		}
-		
-		
-		
-		
-		
-		return null;
+		return gameMode.evaluateRound();
+
+	}
+
+	void setGameMode(CalculationMode mode) {
+		gameMode.setCalculationMode(mode);
+	}
+
+	public  Map<Player, Card> getRoundSpecificCards() {
+		return roundSpecificCards;
 	}
 
 }

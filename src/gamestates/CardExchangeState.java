@@ -1,11 +1,13 @@
 package gamestates;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONObject;
 
 import entities.CardE;
 import entities.Player;
+import entities.PlayerComparator;
 import entities.SymbolE;
 import entities.WertigkeitE;
 import game.Card;
@@ -14,7 +16,7 @@ import game.MoveCoordinator;
 import server.JSONActionsE;
 import server.JSONEventsE;
 import server.JSONIngameAttributes;
-
+	
 public class CardExchangeState extends GameSessionState {
 
 	private int round;
@@ -30,6 +32,7 @@ public class CardExchangeState extends GameSessionState {
 		round = 1;
 	}
 
+
 	@Override
 	public void execute() {
 
@@ -41,16 +44,43 @@ public class CardExchangeState extends GameSessionState {
 			// send card to every other player
 			cardBroadcaster.broadcast(playerList,player,card);
 			
-		}
+		} 
 
 		// decide who won that round
 		Player player = cardGame.evaluateRound();
+		//playerlist sortieren
+		rotatePlayerList(player);
+		
+		
 		notifyRoundWinner(player);
 		// update round integer
 		round++;
 		// check if game ended
 
 	}
+	
+	public int getRound(){
+		return round;
+	}
+	
+	/**
+	 * Rotiert den Gewinner nach vorne
+	 * @param winner
+	 */
+	private void rotatePlayerList(Player winner) {
+		
+		if(winner.getOrder()==1)
+			return;
+		
+		if(winner.getOrder()==2){
+			Collections.rotate(playerList, 1);
+		}
+		if(winner.getOrder()==3)
+			Collections.rotate(playerList, 2);
+		if(winner.getOrder()==4)
+			Collections.rotate(playerList, 3);
+	}
+
 	/**
 	 * Informiert Player, wer gewonnen hat
 	 * @param player
