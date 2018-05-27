@@ -33,9 +33,9 @@ import server.ServerThread;
 
 public class GameSession implements Runnable {
 
-	// private Lobby lobby;
 	private CardGame cardGame;
-
+	private GameMode gameMode;
+	
 	private GameSessionState state;
 
 	private List<Player> playerList;
@@ -44,8 +44,8 @@ public class GameSession implements Runnable {
 
 	public GameSession(List<ClientWorker> clientList) {
 
-		// this.lobby = lobby;
-
+		gameMode = GameMode.getInstance();
+		
 		playerList = new LinkedList<Player>();
 
 		for (int i = 0; i < clientList.size(); i++) {
@@ -60,7 +60,9 @@ public class GameSession implements Runnable {
 	public void run() {
 
 		notifyGameStart();
-
+		gameMode.setCalculationMode(new NormalCalculationMode());
+		
+		
 		// shuffle
 		state = new ShuffleState(playerList, cardGame);
 		state.execute();

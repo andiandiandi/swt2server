@@ -13,9 +13,9 @@ public class CardGame {
 	private CardGenerator cardGenerator;
 
 	private List<Player> playerList;
-
+	// Stiche die Player geholt hat
 	private Map<Player, List<Card>> stiche;
-
+	// Karten in der Runde gespielt
 	private Map<Card, Player> roundSpecificCards;
 
 	private MoveValidator cardDeck;
@@ -52,19 +52,34 @@ public class CardGame {
 			playerList.get(i).setCards(new LinkedList<Card>(playerCards));
 		}
 	}
-
+	/**
+	 * Auszählen nach Runde
+	 * @return
+	 */
 	public Player calculateWinner() {
 		return null;
 	}
-
+	/**
+	 * Checked, ob Valide Karte
+	 * @param card
+	 * @param player
+	 * @return
+	 */
 	public boolean validatePlayedCard(Card card,Player player) {
 		return cardDeck.validatePlayedCard(card,player);
 	}
-
+	/**
+	 * In der Runde gespielte Karte der Map hinzufügen
+	 * @param player
+	 * @param card
+	 */
 	public void addRoundSpecificCard(Player player, Card card) {
 		roundSpecificCards.put(card, player);
 	}
-
+	/**
+	 * Wertet Runde aus
+	 * @return
+	 */
 	public Player evaluateRound() {
 
 		Player to_return = null;
