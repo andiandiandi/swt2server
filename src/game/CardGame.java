@@ -37,6 +37,9 @@ public class CardGame {
 		return null;
 	}
 
+	/**
+	 * Mischt das Kartenspiel
+	 */
 	public void shuffle() {
 		List<Card> cards = cardGenerator.createCards();
 		Collections.shuffle(cards);
