@@ -17,21 +17,32 @@ public class CardGenerator {
 	public List<Card> createCards() {
 		if (!cards.isEmpty())
 			return cards;
-		else {
 
-			String[] wertigkeiten = WertigkeitE.getValues();
+		String[] wertigkeiten = WertigkeitE.getValues();
 
-			for (int i = 0; i < wertigkeiten.length; i++) {
-				for (int j = 0; j < 2; j++) {
-					cards.add(new Card(SymbolE.HERZ, WertigkeitE.valueOf(wertigkeiten[i])));
-					cards.add(new Card(SymbolE.KARO, WertigkeitE.valueOf(wertigkeiten[i])));
-					cards.add(new Card(SymbolE.KREUZ, WertigkeitE.valueOf(wertigkeiten[i])));
-					cards.add(new Card(SymbolE.PIK, WertigkeitE.valueOf(wertigkeiten[i])));
-				}
+		for (int i = 0; i < wertigkeiten.length; i++) {
+			for (int j = 0; j < 2; j++) {
+				cards.add(new Card(SymbolE.HERZ, WertigkeitE.valueOf(wertigkeiten[i]),false));
+				cards.add(new Card(SymbolE.KARO, WertigkeitE.valueOf(wertigkeiten[i]),false));
+				cards.add(new Card(SymbolE.KREUZ, WertigkeitE.valueOf(wertigkeiten[i]),false));
+				cards.add(new Card(SymbolE.PIK, WertigkeitE.valueOf(wertigkeiten[i]),false));
+			}
+		}
+
+		for (Card temp_card : cards) {
+
+			if (temp_card.getWertigkeit() == WertigkeitE.DAME || temp_card.getWertigkeit() == WertigkeitE.BUBE
+					|| temp_card.getSymbol() == SymbolE.KARO) {
+				temp_card.setTrumpf(true);
+			} else if (temp_card.getSymbol() == SymbolE.HERZ && temp_card.getWertigkeit() == WertigkeitE.ZEHN) {
+				temp_card.setTrumpf(true);
 			}
 
-			return cards;
 		}
+
+		return cards;
 	}
 
 }
+
+// herz 10, alle damen, alle buben, alle caros

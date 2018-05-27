@@ -15,7 +15,7 @@ public class RandomCardPicker {
 	public Card getCard(){
 		
 		for(Card card : player.getCards()){
-			if(cardGame.validatePlayedCard(card)){
+			if(cardGame.validatePlayedCard(card,player)){
 				return player.removeCard(card);
 			}
 		}

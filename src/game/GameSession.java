@@ -84,29 +84,6 @@ public class GameSession implements Runnable {
 
 	}
 
-	private void getNextMove(Player player) {
-		JSONObject json = new JSONObject();
-		json.put(JSONActionsE.EVENT.name(), JSONEventsE.MAKEMOVE.name());
-		json.put(JSONEventsE.MAKEMOVE.name(), "gogo");
-		String notification = json.toString();
-
-		player.sendMessage(notification);
-
-		boolean again = true;
-
-		do {
-			String move = player.readMessage();
-			JSONObject json2 = new JSONObject(move);
-			String action = json2.getString(JSONActionsE.EVENT.name());
-			if (action.equals(JSONEventsE.MAKEMOVE.name())) {
-				JSONObject card = (JSONObject) json2.get(JSONIngameAttributes.CARD.name());
-				System.out.println(card.get(CardE.WERTIGKEIT.name()));
-				System.out.println(card.get(CardE.SYMBOL.name()));
-				again = false;
-			}
-		} while (again);
-
-	}
 
 	private void notifyGameStart() {
 
@@ -119,25 +96,5 @@ public class GameSession implements Runnable {
 		}
 	}
 
-	private void checkForFlushes() {
-
-		for (Player player : playerList) {
-
-			boolean repeat = false;
-			do {
-				System.out.println("before toTest");
-				String toTest = player.readMessage();
-				System.out.println("toTest: " + toTest);
-				JSONObject json = new JSONObject(toTest);
-				String action = json.getString(JSONActionsE.EVENT.name());
-				if (action.equals(JSONEventsE.FLUSH.name())) {
-					repeat = true;
-					System.out.println("ate a flush from client: " + player.getUsername());
-				} else
-					repeat = false;
-			} while (repeat);
-
-		}
-	}
 
 }

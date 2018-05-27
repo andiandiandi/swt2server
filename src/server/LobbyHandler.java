@@ -33,6 +33,8 @@ public class LobbyHandler extends Thread {
 					lobby.updateUserQueueClientside(cw);
 				} else if (action.equals(JSONEventsE.QUEUEFORGAME.name())) {
 					lobby.queue(cw);
+				}else if (action.equals(JSONEventsE.LOGOUT.name())) {
+					lobby.logout(cw);
 				}else if (action.equals(JSONEventsE.FLUSH.name())) {
 					gameStarted = true;
 				}

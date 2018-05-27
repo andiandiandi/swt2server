@@ -43,6 +43,8 @@ public class ShuffleState extends GameSessionState {
 				card = p.getCards().get(i);
 				cards.put(CardE.WERTIGKEIT.name(), card.getWertigkeit().name());
 				cards.put(CardE.SYMBOL.name(), card.getSymbol().name());
+				cards.put(CardE.TRUMPF.name(), card.isTrumpf());
+				
 				jsonArr.put(cards);
 			}
 

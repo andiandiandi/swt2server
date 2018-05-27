@@ -35,14 +35,14 @@ public class MoveCoordinator {
 
 		notifyPlayerToMove(player, JSONIngameAttributes.GETMOVE);
 		card = getCardFromPlayer(player);
-		valid = testCardForValidity(card);
+		valid = testCardForValidity(card,player);
 
 		if (!valid) {
 
 			do {
 				notifyPlayerToMove(player, JSONIngameAttributes.INVALID);
 				card = getCardFromPlayer(player);
-				valid = testCardForValidity(card);
+				valid = testCardForValidity(card, player);
 			} while (!valid);
 
 		}
@@ -60,6 +60,7 @@ public class MoveCoordinator {
 
 		jsonCard.put(CardE.WERTIGKEIT.name(), card.getWertigkeit());
 		jsonCard.put(CardE.SYMBOL.name(), card.getSymbol());
+		jsonCard.put(CardE.TRUMPF.name(), card.isTrumpf());
 
 		json.put(JSONActionsE.EVENT.name(), JSONEventsE.MAKEMOVE.name());
 		json.put(JSONEventsE.MAKEMOVE.name(), attribute.name());
@@ -69,8 +70,8 @@ public class MoveCoordinator {
 		player.sendMessage(notification);
 	}
 
-	private boolean testCardForValidity(Card card) {
-		return cardGame.validatePlayedCard(card);
+	private boolean testCardForValidity(Card card, Player player) {
+		return cardGame.validatePlayedCard(card,player);
 	}
 
 	private void notifyPlayerToMove(Player player, JSONIngameAttributes attribute) {
@@ -99,9 +100,10 @@ public class MoveCoordinator {
 						JSONObject jsonCard = (JSONObject) json2.get(JSONIngameAttributes.CARD.name());
 						WertigkeitE wertigkeit = WertigkeitE.valueOf(jsonCard.get(CardE.WERTIGKEIT.name()).toString());
 						SymbolE symbol = SymbolE.valueOf(jsonCard.get(CardE.SYMBOL.name()).toString());
+						boolean trumpf = jsonCard.getBoolean(CardE.TRUMPF.name());
 
 						feedback = JSONIngameAttributes.VALID;
-						to_return = new Card(symbol, wertigkeit);
+						to_return = new Card(symbol, wertigkeit,trumpf);
 
 					} else if (json2.getString(JSONEventsE.MAKEMOVE.name())
 							.equals(JSONIngameAttributes.TIMEEXPIRED.name())) {

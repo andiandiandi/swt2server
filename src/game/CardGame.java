@@ -18,14 +18,14 @@ public class CardGame {
 
 	private Map<Card, Player> roundSpecificCards;
 
-	private CardDeck cardDeck;
+	private MoveValidator cardDeck;
 
 	public CardGame(List<Player> playerList) {
 		this.playerList = playerList;
 		stiche = new HashMap<Player, List<Card>>();
 		cardGenerator = new CardGenerator();
 		roundSpecificCards = new HashMap<Card, Player>();
-		cardDeck = new CardDeck();
+		cardDeck = new MoveValidator();
 	}
 
 	public void updateCardGame() {
@@ -54,8 +54,8 @@ public class CardGame {
 		return null;
 	}
 
-	public boolean validatePlayedCard(Card card) {
-		return cardDeck.validatePlayedCard(card);
+	public boolean validatePlayedCard(Card card,Player player) {
+		return cardDeck.validatePlayedCard(card,player);
 	}
 
 	public void addRoundSpecificCard(Player player, Card card) {

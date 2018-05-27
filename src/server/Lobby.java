@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -178,6 +179,34 @@ public class Lobby {
 		jsonObj.put(JSONLobbyAttributes.NEWQUEUENUMBER.name(), queue.size() + "");
 
 		cw.sendMessage(jsonObj.toString());
+	}
+
+	public void logout(ClientWorker cw) {
+		
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				if(queue.contains(cw)){
+					queue.remove(cw);
+				}
+				
+				LobbyHandler lobbyHandler_temp = users.get(cw);
+				lobbyHandler_temp.readyToShutdown();
+				lobbyHandler_temp.stop();
+				try {
+					cw.getSocket().close();
+					users.remove(cw);
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}).start();
+		
 	}
 
 }

@@ -30,6 +30,8 @@ public class CardBroadcaster {
 		
 		json_card.put(CardE.WERTIGKEIT.name(), card.getWertigkeit());
 		json_card.put(CardE.SYMBOL.name(), card.getSymbol());
+		json_card.put(CardE.TRUMPF.name(), card.isTrumpf());
+		
 		
 		json.put(JSONActionsE.EVENT.name(), JSONEventsE.CARDBROADCAST.name());
 		json.put(JSONIngameAttributes.CARD.name(), json_card);

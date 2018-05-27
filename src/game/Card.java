@@ -9,9 +9,10 @@ public class Card implements Comparable<Card> {
 	private WertigkeitE wertigkeit;
 	private boolean trumpf;
 
-	public Card(SymbolE symbol, WertigkeitE wertigkeit) {
+	public Card(SymbolE symbol, WertigkeitE wertigkeit, boolean trumpf) {
 		this.symbol = symbol;
 		this.wertigkeit = wertigkeit;
+		this.trumpf = trumpf;
 	}
 
 	public SymbolE getSymbol() {

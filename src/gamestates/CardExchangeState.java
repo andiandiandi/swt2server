@@ -44,12 +44,8 @@ public class CardExchangeState extends GameSessionState {
 		}
 
 		// decide who won that round
-		System.out.println("before evaluation");
 		Player player = cardGame.evaluateRound();
-		System.out.println("after evaluation");
-		System.out.println("notifying winner");
 		notifyRoundWinner(player);
-		System.out.println("after notifying winner");
 		// update round integer
 		round++;
 		// check if game ended
