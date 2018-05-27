@@ -16,11 +16,11 @@ import game.MoveCoordinator;
 import server.JSONActionsE;
 import server.JSONEventsE;
 import server.JSONIngameAttributes;
-	
+
 public class CardExchangeState extends GameSessionState {
 
 	private int round;
-	
+
 	private MoveCoordinator moveCoordinator;
 	private CardBroadcaster cardBroadcaster;
 
@@ -32,7 +32,6 @@ public class CardExchangeState extends GameSessionState {
 		round = 1;
 	}
 
-
 	@Override
 	public void execute() {
 
@@ -40,17 +39,22 @@ public class CardExchangeState extends GameSessionState {
 
 			// tell player to do move and start time
 			Card card = moveCoordinator.getMove(player);
-			cardGame.addRoundSpecificCard(player,card);
+			cardGame.addRoundSpecificCard(player, card);
 			// send card to every other player
-			cardBroadcaster.broadcast(playerList,player,card);
-			
-		} 
+			cardBroadcaster.broadcast(playerList, player, card);
+
+		}
 
 		// decide who won that round
 		Player player = cardGame.evaluateRound();
-		//playerlist sortieren
+		// playerlist sortieren
 		rotatePlayerList(player);
-		
+
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		notifyRoundWinner(player);
 		// update round integer
@@ -58,47 +62,46 @@ public class CardExchangeState extends GameSessionState {
 		// check if game ended
 
 	}
-	
-	public int getRound(){
+
+	public int getRound() {
 		return round;
 	}
-	
+
 	/**
 	 * Rotiert den Gewinner nach vorne
+	 * 
 	 * @param winner
 	 */
 	private void rotatePlayerList(Player winner) {
-		
-		if(winner.getOrder()==1)
+
+		if (winner.getOrder() == 1)
 			return;
-		
-		if(winner.getOrder()==2){
+
+		if (winner.getOrder() == 2) {
 			Collections.rotate(playerList, 1);
 		}
-		if(winner.getOrder()==3)
+		if (winner.getOrder() == 3)
 			Collections.rotate(playerList, 2);
-		if(winner.getOrder()==4)
+		if (winner.getOrder() == 4)
 			Collections.rotate(playerList, 3);
 	}
 
 	/**
 	 * Informiert Player, wer gewonnen hat
+	 * 
 	 * @param player
 	 */
 	private void notifyRoundWinner(Player player) {
-		
+
 		JSONObject json = new JSONObject();
 		json.put(JSONActionsE.EVENT.name(), JSONEventsE.ROUNDWINNER.name());
 		json.put(JSONEventsE.ROUNDWINNER.name(), player.getUsername());
 		String notification = json.toString();
-		
-		for(Player receiver : playerList){			
+
+		for (Player receiver : playerList) {
 			receiver.sendMessage(notification);
 		}
 
-		
 	}
-
-
 
 }

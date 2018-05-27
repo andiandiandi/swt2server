@@ -79,6 +79,7 @@ public class GameSession implements Runnable {
 			}else
 				gameEnded = true;
 
+			
 		}
 
 		// spielauswertung (wer hat gewonnen)
