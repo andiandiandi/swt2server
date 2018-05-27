@@ -29,13 +29,13 @@ public class NormalCalculationMode extends CalculationMode {
 		while(it.hasNext()){
 			Player temp = it.next();
 			Card tempCard = roundSpecificCards.get(temp);
-			// Trumpf schlägt Fehl
+			// Trumpf schlï¿½gt Fehl
 			if (tempCard.isTrumpf() && !winnerCard.isTrumpf()) {
 				winner = temp;
 				winnerCard = tempCard;
 			}
 			if (winnerCard.isTrumpf() && tempCard.isTrumpf()) {
-				// Wenn die Trümpfe verschieden sind
+				// Wenn die Trï¿½mpfe verschieden sind
 				if(!winnerCard.equals(tempCard)) {
 					switch(tempCard.getWertigkeit()) {
 					case DAME: {
@@ -46,7 +46,7 @@ public class NormalCalculationMode extends CalculationMode {
 				}
 			}
 		}
-		return null;
+		return roundSpecificCards.keySet().iterator().next();
 	}
 	
 
