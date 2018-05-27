@@ -66,7 +66,7 @@ public class CardGame {
 		roundSpecificCards.put(player,card);
 	}
 	/**
-	 * 1. Trumpf H10 > B > D > > KA Ass > KA 10 > KA K 
+	 * 1. Trumpf H10 > D > B > > KA Ass > KA 10 > KA K 
 	 * 2. Fehl  Ass > 10 > K
 	 * @return
 	 */
