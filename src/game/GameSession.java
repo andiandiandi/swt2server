@@ -65,7 +65,7 @@ public class GameSession implements Runnable {
 		state = new ShuffleState(playerList, cardGame);
 		state.execute();
 
-		// reihenfolge der züge dem spieler mitteilen
+		// reihenfolge der zÃ¼ge dem spieler mitteilen
 		state = new PlayerOrderState(playerList, cardGame);
 		state.execute();
 

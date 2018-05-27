@@ -51,7 +51,10 @@ public class CardExchangeState extends GameSessionState {
 		// check if game ended
 
 	}
-
+	/**
+	 * Informiert Player, wer gewonnen hat
+	 * @param player
+	 */
 	private void notifyRoundWinner(Player player) {
 		
 		JSONObject json = new JSONObject();
