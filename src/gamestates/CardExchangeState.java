@@ -59,10 +59,15 @@ public class CardExchangeState extends GameSessionState {
 		notifyRoundWinner(player);
 		// update round integer
 		round++;
+		//reset move validator
+		cardGame.resetMoveValidator();
 		// check if game ended
 
 	}
 
+	// a b c d
+	// b c d a
+	
 	public int getRound() {
 		return round;
 	}
@@ -77,9 +82,8 @@ public class CardExchangeState extends GameSessionState {
 		if (winner.getOrder() == 1)
 			return;
 
-		if (winner.getOrder() == 2) {
+		if (winner.getOrder() == 2) 
 			Collections.rotate(playerList, 1);
-		}
 		if (winner.getOrder() == 3)
 			Collections.rotate(playerList, 2);
 		if (winner.getOrder() == 4)

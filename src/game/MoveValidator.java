@@ -17,13 +17,16 @@ public class MoveValidator {
 		
 		if(compareCard == null){
 			compareCard = new Card(card.getSymbol(),card.getWertigkeit(),card.isTrumpf());
-			System.out.println("compareCard ist jetzt: " + compareCard);
 			return true;
 		}
 		
 		return state.validate(card, compareCard, player.getCards());
 		
 		
+	}
+	
+	public void reset(){
+		compareCard = null;
 	}
 
 }

@@ -2,6 +2,7 @@ package game.calculationMode;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeSet;
 
 import entities.Player;
 import entities.SymbolE;
@@ -24,17 +25,20 @@ public class NormalCalculationMode extends CalculationMode {
 	@Override
 	public Player evaluateRound() {
 
-		Iterator<Player> it = roundSpecificCards.keySet().iterator();
+		Iterator<Player> it = new TreeSet(roundSpecificCards.keySet()).iterator();
 
 		winner = it.next();
 		winnerCard = roundSpecificCards.get(winner);
+		System.out.println(winner.getUsername());
 		while (it.hasNext()) {
+			System.out.println(winner.getUsername());
 			Player temp = it.next();
 			Card tempCard = roundSpecificCards.get(temp);
 			// Trumpf schlägt Fehl
 			if (tempCard.isTrumpf() && !winnerCard.isTrumpf()) {
 				setWinner(temp, tempCard);
 			}
+			System.out.println("Trumpf schlägt fehl "+ winner.getUsername());
 			if (winnerCard.isTrumpf() && tempCard.isTrumpf()) {
 				// Wenn die Trümpfe verschieden sind
 				if (!winnerCard.equals(tempCard)) {
@@ -43,16 +47,19 @@ public class NormalCalculationMode extends CalculationMode {
 					}
 				}
 			}
+			System.out.println("Zwei verschiedene Trümpfe" + winner.getUsername());
 			// Beides Fehl: Wenn tempCard Symbol gleich, dann überprüfen, sonst bleibt der
 			// winner
 			if (!winnerCard.isTrumpf() && !tempCard.isTrumpf()) {
 				if (tempCard.getSymbol() == winnerCard.getSymbol()) {
-					if (tempCard.getWertigkeit().ordinal() > winnerCard.getWertigkeit().ordinal()) {
+					if (tempCard.getWertigkeit().getNumVal() > winnerCard.getWertigkeit().getNumVal()) {
 						setWinner(temp, tempCard);
 					}
 				}
 			}
+			System.out.println("beides fehl "+ winner.getUsername());
 		}
+		
 		return winner;
 	}
 
@@ -74,7 +81,7 @@ public class NormalCalculationMode extends CalculationMode {
 			} else
 				return 0;
 		}
-		int[][] valuesTrumpf = new int[4][];
+		int[][] valuesTrumpf = new int[4][12];
 		// Dame = 20 Bube = 10 H10 = 100 KaroAss=3 Karo10=2 KaroK = 1
 		// Kreuz = 3, Pik = 2 Herz = 1 Karo = 0
 		for (int i = 0; i <= 3; i++) {
@@ -91,11 +98,11 @@ public class NormalCalculationMode extends CalculationMode {
 			valuesTrumpf[SymbolE.KARO.ordinal()][WertigkeitE.ASS.getNumVal()] = 3;
 		}
 		
-		if (valuesTrumpf[a.getSymbol().ordinal()][a.getWertigkeit().ordinal()] < valuesTrumpf[b.getSymbol().ordinal()][b
-				.getWertigkeit().ordinal()]) {
+		if (valuesTrumpf[a.getSymbol().ordinal()][a.getWertigkeit().getNumVal()] < valuesTrumpf[b.getSymbol().ordinal()][b
+				.getWertigkeit().getNumVal()]) {
 			return 1;
 		} else if (valuesTrumpf[a.getSymbol().ordinal()][a.getWertigkeit()
-				.ordinal()] > valuesTrumpf[b.getSymbol().ordinal()][b.getWertigkeit().ordinal()]) {
+				.getNumVal()] > valuesTrumpf[b.getSymbol().ordinal()][b.getWertigkeit().getNumVal()]) {
 
 			return -1;
 		}

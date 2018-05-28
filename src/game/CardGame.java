@@ -65,6 +65,10 @@ public class CardGame {
 	public boolean validatePlayedCard(Card card, Player player) {
 		return moveValidator.validatePlayedCard(card, player);
 	}
+	
+	public void resetMoveValidator(){
+		moveValidator.reset();
+	}
 
 	public void addRoundSpecificCard(Player player, Card card) {
 		roundSpecificCards.put(player, card);
@@ -72,7 +76,9 @@ public class CardGame {
 
 	public Player evaluateRound() {
 
-		return gameMode.evaluateRound();
+		Player to_return = gameMode.evaluateRound();
+		roundSpecificCards.clear();
+		return to_return;
 
 	}
 
@@ -80,7 +86,7 @@ public class CardGame {
 		gameMode.setCalculationMode(mode);
 	}
 
-	public  Map<Player, Card> getRoundSpecificCards() {
+	public Map<Player, Card> getRoundSpecificCards() {
 		return roundSpecificCards;
 	}
 

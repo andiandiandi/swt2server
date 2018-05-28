@@ -10,7 +10,7 @@ import java.util.List;
 import game.Card;
 import server.ClientWorker;
 
-public class Player{
+public class Player implements Comparable<Player>{
 
 	private List<Card> playerCards;
 	private Socket socket;
@@ -49,12 +49,23 @@ public class Player{
 		return cw.readMessage();
 	}
 
+	
+	
 	public void setOrder(int order){
 		this.order=order;
 	}
 	
 	public int getOrder() {
 		return order;
+	}
+
+	@Override
+	public int compareTo(Player o) {
+		if(this.getOrder()>o.getOrder())
+			return 1;
+		else if(this.getOrder()<o.getOrder())
+			return -1;
+		else return 0;
 	}
 
 	

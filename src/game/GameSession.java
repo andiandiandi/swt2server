@@ -6,8 +6,10 @@ import java.util.List;
 import org.json.JSONObject;
 
 import entities.Player;
+import game.calculationMode.CalculationMode;
 import game.calculationMode.NormalCalculationMode;
 import gamestates.CardExchangeState;
+import gamestates.GameModeState;
 import gamestates.GameSessionState;
 import gamestates.PlayerOrderState;
 import gamestates.ShuffleState;
@@ -42,7 +44,6 @@ public class GameSession implements Runnable {
 	public void run() {
 
 		notifyGameStart();
-		cardGame.setGameMode(new NormalCalculationMode(cardGame.getRoundSpecificCards()));
 		
 		// shuffle
 		state = new ShuffleState(playerList, cardGame);
@@ -51,7 +52,15 @@ public class GameSession implements Runnable {
 		// reihenfolge der züge dem spieler mitteilen
 		state = new PlayerOrderState(playerList, cardGame);
 		state.execute();
+		
+		state = new GameModeState(playerList, cardGame);
+		state.execute();
 
+		CalculationMode gameMode = ((GameModeState)state).getGameMode();
+		cardGame.setGameMode(new NormalCalculationMode(cardGame.getRoundSpecificCards()));
+		
+		
+		
 		state = new CardExchangeState(playerList, cardGame);
 
 		
