@@ -49,6 +49,9 @@ public class CardExchangeState extends GameSessionState {
 		Player player = cardGame.evaluateRound();
 		// playerlist sortieren
 		rotatePlayerList(player);
+		for(Player p : playerList){
+			System.out.println("rotate: " + p.getUsername());
+		}
 
 		try {
 			Thread.sleep(3000);
@@ -62,6 +65,7 @@ public class CardExchangeState extends GameSessionState {
 		//reset move validator
 		cardGame.resetMoveValidator();
 		// check if game ended
+		
 
 	}
 
@@ -83,11 +87,18 @@ public class CardExchangeState extends GameSessionState {
 			return;
 
 		if (winner.getOrder() == 2) 
-			Collections.rotate(playerList, 1);
+			Collections.rotate(playerList, 3);
 		if (winner.getOrder() == 3)
 			Collections.rotate(playerList, 2);
 		if (winner.getOrder() == 4)
-			Collections.rotate(playerList, 3);
+			Collections.rotate(playerList, 1);
+		
+		int order= 1;
+		
+		for(Player temp : playerList){
+			temp.setOrder(order++);
+		}
+		
 	}
 
 	/**

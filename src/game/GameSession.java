@@ -57,7 +57,7 @@ public class GameSession implements Runnable {
 		state.execute();
 
 		CalculationMode gameMode = ((GameModeState)state).getGameMode();
-		cardGame.setGameMode(new NormalCalculationMode(cardGame.getRoundSpecificCards()));
+		cardGame.setGameMode(gameMode);
 		
 		
 		

@@ -29,7 +29,6 @@ public class NormalCalculationMode extends CalculationMode {
 
 		winner = it.next();
 		winnerCard = roundSpecificCards.get(winner);
-		System.out.println(winner.getUsername());
 		while (it.hasNext()) {
 			System.out.println(winner.getUsername());
 			Player temp = it.next();
@@ -38,7 +37,6 @@ public class NormalCalculationMode extends CalculationMode {
 			if (tempCard.isTrumpf() && !winnerCard.isTrumpf()) {
 				setWinner(temp, tempCard);
 			}
-			System.out.println("Trumpf schlägt fehl "+ winner.getUsername());
 			if (winnerCard.isTrumpf() && tempCard.isTrumpf()) {
 				// Wenn die Trümpfe verschieden sind
 				if (!winnerCard.equals(tempCard)) {
@@ -47,7 +45,6 @@ public class NormalCalculationMode extends CalculationMode {
 					}
 				}
 			}
-			System.out.println("Zwei verschiedene Trümpfe" + winner.getUsername());
 			// Beides Fehl: Wenn tempCard Symbol gleich, dann überprüfen, sonst bleibt der
 			// winner
 			if (!winnerCard.isTrumpf() && !tempCard.isTrumpf()) {
@@ -57,7 +54,6 @@ public class NormalCalculationMode extends CalculationMode {
 					}
 				}
 			}
-			System.out.println("beides fehl "+ winner.getUsername());
 		}
 		
 		return winner;
@@ -85,8 +81,8 @@ public class NormalCalculationMode extends CalculationMode {
 		// Dame = 20 Bube = 10 H10 = 100 KaroAss=3 Karo10=2 KaroK = 1
 		// Kreuz = 3, Pik = 2 Herz = 1 Karo = 0
 		for (int i = 0; i <= 3; i++) {
-			valuesTrumpf[i][WertigkeitE.BUBE.getNumVal()] = 20 + i;
-			valuesTrumpf[i][WertigkeitE.DAME.getNumVal()] = 10 + i;
+			valuesTrumpf[i][WertigkeitE.BUBE.getNumVal()] = 10 + i;
+			valuesTrumpf[i][WertigkeitE.DAME.getNumVal()] = 20 + i;
 		}
 		valuesTrumpf[SymbolE.HERZ.ordinal()][WertigkeitE.ZEHN.getNumVal()] = 100;
 		valuesTrumpf[SymbolE.KARO.ordinal()][WertigkeitE.KOENIG.getNumVal()] = 1;

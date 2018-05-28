@@ -1,22 +1,20 @@
 package gamestates;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import entities.CardE;
 import entities.GamemodeE;
 import entities.Player;
-import game.Card;
 import game.CardGame;
-import game.GameMode;
 import game.calculationMode.CalculationMode;
-import game.calculationMode.FarbstichCalculationMode;
 import game.calculationMode.FleischlosCalculationMode;
 import game.calculationMode.NormalCalculationMode;
 import server.JSONActionsE;
-import server.JSONAttributesE;
 import server.JSONEventsE;
 
 public class GameModeState extends GameSessionState {
@@ -30,13 +28,15 @@ public class GameModeState extends GameSessionState {
 	@Override
 	public void execute() {
 
-		GamemodeE gameModeE = null;
+		GamemodeE gameModeE = GamemodeE.NORMAL;
 		
 		//ask every player for gamemode
 		JSONObject toSend = new JSONObject();
 		toSend.put(JSONActionsE.EVENT.name(), JSONEventsE.GETGAMEMODE.name());
 		for (Player p : playerList)
 			p.sendMessage(toSend.toString());
+		
+		Map<Player,GamemodeE> map = new HashMap<Player,GamemodeE>();
 		
 		//get response
 		for(Player temp : playerList){
@@ -50,14 +50,20 @@ public class GameModeState extends GameSessionState {
 			}
 			String string_mode = obj.getString(JSONEventsE.GETGAMEMODE.name());
 			GamemodeE mode = GamemodeE.valueOf(string_mode);
-			if(temp.getOrder()==1){
-				gameModeE = mode;
-				setGameMode(mode);				
+			map.put(temp,mode);
+		}
+		
+		Iterator<Player> it = new TreeSet(map.keySet()).iterator();
+		Player aktuell = null;
+		while(it.hasNext()){
+			aktuell = it.next();
+			if(map.get(aktuell)!=gameModeE.NORMAL){
+				gameModeE = map.get(aktuell);
 				break;
 			}
-			
-			
 		}
+		setGameMode(gameModeE);				
+		//b d a c
 		
 		//send ack with payload: gamemode 
 		for(Player temp2 : playerList){
