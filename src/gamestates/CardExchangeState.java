@@ -64,7 +64,6 @@ public class CardExchangeState extends GameSessionState {
 		round++;
 		//reset move validator
 		cardGame.resetMoveValidator();
-		// check if game ended
 		
 
 	}

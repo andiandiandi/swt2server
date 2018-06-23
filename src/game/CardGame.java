@@ -37,8 +37,15 @@ public class CardGame {
 
 	}
 
-	private Map<Player, Integer> calculateStiche() {
-		return null;
+	Map<Player, Integer> getStiche() {
+		
+		HashMap<Player,Integer> temp = new HashMap<Player,Integer>();
+		int i=1;
+		
+		for(Player p : playerList)
+			temp.put(p, 100+i++);
+		
+		return temp;
 	}
 
 	/**

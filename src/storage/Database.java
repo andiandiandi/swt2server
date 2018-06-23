@@ -2,10 +2,21 @@ package storage;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+import entities.Player;
+import entities.PunkteStand;
+import entities.Spiel;
 
 public class Database {
 
 	private static Database instance;
+	private EntityManagerFactory factory;
+	private EntityManager em;
 
 	List<String> validUsernames;
 	private List<String> online;
@@ -22,6 +33,7 @@ public class Database {
 		validUsernames.add("g");
 		validUsernames.add("h");
 
+		factory = Persistence.createEntityManagerFactory("doppelkopfSpiel");
 	}
 
 	public boolean verifyUser(String username, String password) {
@@ -30,7 +42,7 @@ public class Database {
 
 		if (!alreadyLoggedIn) {
 			for (String name : validUsernames) {
-				if (username.equals(name)){
+				if (username.equals(name)) {
 					online.add(username);
 					return true;
 				}
@@ -42,6 +54,29 @@ public class Database {
 
 	private boolean isLoggedIn(String username) {
 		return online.contains(username);
+	}
+
+	public void persist(Map<Player, Integer> playerList) {
+
+		em = factory.createEntityManager();
+
+		// create new todo
+		em.getTransaction().begin();
+
+		Spiel spiel = new Spiel();
+
+		for (Player p : playerList.keySet()) {
+			PunkteStand temp = new PunkteStand();
+			temp.setSpielerID(p.getUsername());
+			temp.setPunkte(playerList.get(p));
+			spiel.add(temp);
+		}
+
+		em.persist(spiel);
+
+		em.getTransaction().commit();
+		em.close();
+
 	}
 
 	public static Database getInstance() {

@@ -2,12 +2,12 @@ package game;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 
 import entities.Player;
 import game.calculationMode.CalculationMode;
-import game.calculationMode.NormalCalculationMode;
 import gamestates.CardExchangeState;
 import gamestates.GameModeState;
 import gamestates.GameSessionState;
@@ -16,6 +16,7 @@ import gamestates.ShuffleState;
 import server.ClientWorker;
 import server.JSONActionsE;
 import server.JSONEventsE;
+import storage.Database;
 
 public class GameSession implements Runnable {
 
@@ -67,7 +68,7 @@ public class GameSession implements Runnable {
 		while (!gameEnded) {
 
 			// equals 1 round
-			if(((CardExchangeState) state).getRound()<=10){
+			if(((CardExchangeState) state).getRound()<=2){
 				state.execute();				
 			}else
 				gameEnded = true;
@@ -76,10 +77,22 @@ public class GameSession implements Runnable {
 		}
 
 		// spielauswertung (wer hat gewonnen)
+			//stiche auswerten etc.
+			//persistieren
+			persistPunktestand();
 		
 		
 	}
 
+	
+	private void persistPunktestand(){
+		
+		System.out.println("persisting now");
+		Map<Player,Integer> stiche = cardGame.getStiche();
+		
+		Database.getInstance().persist(stiche);
+		
+	}
 
 	private void notifyGameStart() {
 
