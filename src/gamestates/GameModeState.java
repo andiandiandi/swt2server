@@ -10,8 +10,10 @@ import org.json.JSONObject;
 
 import entities.GamemodeE;
 import entities.Player;
+import entities.SymbolE;
 import game.CardGame;
 import game.calculationMode.CalculationMode;
+import game.calculationMode.FarbstichCalculationMode;
 import game.calculationMode.FleischlosCalculationMode;
 import game.calculationMode.NormalCalculationMode;
 import server.JSONActionsE;
@@ -81,7 +83,8 @@ public class GameModeState extends GameSessionState {
 		else if(gameModeE == GamemodeE.FLEISCHLOS)
 			mode = new FleischlosCalculationMode(cardGame.getRoundSpecificCards());
 		else if(gameModeE == GamemodeE.FARBSTICH){
-			//mode = new FarbstichCalculationMode(cardGame.getRoundSpecificCards());			
+			// TODO Farbe muss vom clienten übergeben werden
+			mode = new FarbstichCalculationMode(SymbolE.HERZ,cardGame.getRoundSpecificCards());			
 		}
 		
 	}

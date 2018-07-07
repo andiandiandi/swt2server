@@ -25,7 +25,7 @@ public class NormalCalculationMode extends CalculationMode {
 	@Override
 	public Player evaluateRound() {
 
-		Iterator<Player> it = new TreeSet(roundSpecificCards.keySet()).iterator();
+		Iterator<Player> it = new TreeSet<Player>(roundSpecificCards.keySet()).iterator();
 
 		winner = it.next();
 		winnerCard = roundSpecificCards.get(winner);

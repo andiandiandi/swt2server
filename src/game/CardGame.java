@@ -34,7 +34,7 @@ public class CardGame {
 	}
 
 	public void updateCardGame() {
-
+			
 	}
 
 	Map<Player, Integer> getStiche() {
