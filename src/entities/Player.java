@@ -12,6 +12,7 @@ public class Player implements Comparable<Player>{
 	private List<Card> playerCards;
 	private Socket socket;
 	private boolean solo;
+	private boolean re;
 
 	private ClientWorker cw;
 
@@ -21,6 +22,7 @@ public class Player implements Comparable<Player>{
 		this.cw = cw;
 		socket = cw.getSocket();
 		solo = false;
+		re = false;
 	}
 
 	public void setCards(List<Card> cards) {
@@ -37,6 +39,14 @@ public class Player implements Comparable<Player>{
 
 	public void setSolo(boolean solo) {
 		this.solo = solo;
+	}
+
+	public boolean isRe() {
+		return re;
+	}
+
+	public void setRe(boolean re) {
+		this.re = re;
 	}
 
 	public Card removeCard(Card card) {
