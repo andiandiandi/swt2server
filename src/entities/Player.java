@@ -1,9 +1,6 @@
 package entities;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.net.Socket;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,6 +11,7 @@ public class Player implements Comparable<Player>{
 
 	private List<Card> playerCards;
 	private Socket socket;
+	private boolean solo;
 
 	private ClientWorker cw;
 
@@ -22,6 +20,7 @@ public class Player implements Comparable<Player>{
 	public Player(ClientWorker cw) {
 		this.cw = cw;
 		socket = cw.getSocket();
+		solo = false;
 	}
 
 	public void setCards(List<Card> cards) {
@@ -30,6 +29,14 @@ public class Player implements Comparable<Player>{
 
 	public List<Card> getCards() {
 		return playerCards;
+	}
+
+	public boolean isSolo() {
+		return solo;
+	}
+
+	public void setSolo(boolean solo) {
+		this.solo = solo;
 	}
 
 	public Card removeCard(Card card) {
