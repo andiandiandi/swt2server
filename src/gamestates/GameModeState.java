@@ -10,9 +10,14 @@ import org.json.JSONObject;
 
 import entities.GamemodeE;
 import entities.Player;
+import entities.SymbolE;
 import game.CardGame;
+import game.calculationMode.BubenSoloCalculationMode;
 import game.calculationMode.CalculationMode;
+import game.calculationMode.DamenSoloCalculationMode;
+import game.calculationMode.FarbstichCalculationMode;
 import game.calculationMode.FleischlosCalculationMode;
+import game.calculationMode.GranSoloCalculationMode;
 import game.calculationMode.NormalCalculationMode;
 import server.JSONActionsE;
 import server.JSONEventsE;
@@ -75,13 +80,20 @@ public class GameModeState extends GameSessionState {
 	}
 
 	private void setGameMode(GamemodeE gameModeE) {
-		
+		// TODO Für die Soli muss der Callende Spieler als solo spieler gelten!
 		if(gameModeE == GamemodeE.NORMAL)
 			mode = new NormalCalculationMode(cardGame.getRoundSpecificCards());
+		else if(gameModeE == GamemodeE.BUBENSOLO)
+			mode = new BubenSoloCalculationMode(cardGame.getRoundSpecificCards());
+		else if(gameModeE == GamemodeE.DAMENSOLO)
+			mode = new DamenSoloCalculationMode(cardGame.getRoundSpecificCards());
+		else if(gameModeE == GamemodeE.GRAN)
+			mode = new GranSoloCalculationMode(cardGame.getRoundSpecificCards());
 		else if(gameModeE == GamemodeE.FLEISCHLOS)
 			mode = new FleischlosCalculationMode(cardGame.getRoundSpecificCards());
 		else if(gameModeE == GamemodeE.FARBSTICH){
-			//mode = new FarbstichCalculationMode(cardGame.getRoundSpecificCards());			
+			// TODO Farbe muss vom clienten übergeben werden
+			mode = new FarbstichCalculationMode(SymbolE.HERZ,cardGame.getRoundSpecificCards());			
 		}
 		
 	}

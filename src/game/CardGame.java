@@ -8,6 +8,8 @@ import java.util.Map;
 
 import entities.GamemodeE;
 import entities.Player;
+import entities.SymbolE;
+import entities.WertigkeitE;
 import game.calculationMode.CalculationMode;
 
 public class CardGame {
@@ -42,6 +44,7 @@ public class CardGame {
 
 	}
 
+
 	Map<Player, Integer> getStichePoints() {
 
 		Map<Player, Integer> points = new HashMap<Player, Integer>();
@@ -50,7 +53,17 @@ public class CardGame {
 			points.put(temp, calculatePoints(temp));
 		
 		return points;
-		
+	}
+	
+	Map<Player, Integer> getStiche() {
+
+		HashMap<Player, Integer> temp = new HashMap<Player, Integer>();
+		int i = 1;
+
+		for (Player p : playerList)
+			temp.put(p, 100 + i++);
+
+		return temp;
 	}
 
 	/**
@@ -64,10 +77,27 @@ public class CardGame {
 		for (int i = 0; i < 4; i++) {
 			playerCards.clear();
 			for (int j = 0; j < 10; j++) {
+				// Hat er ein Schweinchen?
+				if (playerCards.contains(new Card(SymbolE.KARO, WertigkeitE.ASS, true))
+						&& cards.get(i).getWertigkeit() == WertigkeitE.ASS
+						&& cards.get(i).getSymbol() == SymbolE.KARO) {
+					cards.get(i).setSchweinchen(true);
+					for (Card c : playerCards) {
+						if (c.getWertigkeit() == WertigkeitE.ASS && c.getSymbol() == SymbolE.KARO) {
+							c.setSchweinchen(true);
+						}
+					}
+				}
 				playerCards.add(cards.get(index++));
+				// Kreuzdame = RE
+				if (cards.get(i).getWertigkeit() == WertigkeitE.DAME && cards.get(i).getSymbol() == SymbolE.KREUZ) {
+					playerList.get(i).setRe(true);
+				}
+
 			}
 			playerList.get(i).setCards(new LinkedList<Card>(playerCards));
 		}
+
 	}
 
 	public List<Player> calculateWinner() {

@@ -1,21 +1,21 @@
 package entities;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.net.Socket;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import game.Card;
 import server.ClientWorker;
 
-public class Player implements Comparable<Player>{
+public class Player implements Comparable<Player> {
 
 	private List<Card> playerCards;
 	private Socket socket;
 	
 	private boolean re;
+	private boolean solo;
+	private List<ActionCallE> ansagen;
 
 	private ClientWorker cw;
 
@@ -24,6 +24,17 @@ public class Player implements Comparable<Player>{
 	public Player(ClientWorker cw) {
 		this.cw = cw;
 		socket = cw.getSocket();
+		solo = false;
+		re = false;
+		ansagen = new ArrayList<ActionCallE>();
+	}
+
+	public void addAnsage(ActionCallE a) {
+		ansagen.add(a);
+	}
+
+	public List<ActionCallE> getAnsagen() {
+		return ansagen;
 	}
 
 	public void setCards(List<Card> cards) {
@@ -38,6 +49,14 @@ public class Player implements Comparable<Player>{
 		return playerCards;
 	}
 
+	public boolean isSolo() {
+		return solo;
+	}
+
+	public void setSolo(boolean solo) {
+		this.solo = solo;
+	}
+
 	public Card removeCard(Card card) {
 		playerCards.remove(card);
 		return card;
@@ -47,18 +66,18 @@ public class Player implements Comparable<Player>{
 		cw.sendMessage(message);
 	}
 
-	public String getUsername(){
+	public String getUsername() {
 		return cw.getUsername();
 	}
-	
+
 	public String readMessage() {
 		return cw.readMessage();
 	}
-
+	
 	public void setOrder(int order){
 		this.order=order;
 	}
-	
+
 	public int getOrder() {
 		return order;
 	}
@@ -73,12 +92,12 @@ public class Player implements Comparable<Player>{
 
 	@Override
 	public int compareTo(Player o) {
-		if(this.getOrder()>o.getOrder())
+		if (this.getOrder() > o.getOrder())
 			return 1;
-		else if(this.getOrder()<o.getOrder())
+		else if (this.getOrder() < o.getOrder())
 			return -1;
-		else return 0;
+		else
+			return 0;
 	}
-	
 
 }
