@@ -7,6 +7,7 @@ import java.util.concurrent.FutureTask;
 
 import org.json.JSONObject;
 
+import entities.Card;
 import entities.CardE;
 import entities.Player;
 import entities.SymbolE;
@@ -21,6 +22,7 @@ public class MoveCoordinator {
 	private CardGame cardGame;
 	private RandomCardPicker randomCardPicker;
 	private JSONIngameAttributes feedback;
+	private volatile boolean valid;
 
 	public MoveCoordinator(CardGame cardGame) {
 
@@ -31,7 +33,8 @@ public class MoveCoordinator {
 	public Card getMove(Player player) {
 
 		Card card = null;
-		boolean valid = false;
+		valid = false;
+		feedback = null;
 
 		notifyPlayerToMove(player, JSONIngameAttributes.GETMOVE);
 		card = getCardFromPlayer(player);
@@ -43,11 +46,15 @@ public class MoveCoordinator {
 				notifyPlayerToMove(player, JSONIngameAttributes.INVALID);
 				card = getCardFromPlayer(player);
 				valid = testCardForValidity(card, player);
+				System.out.println(card + " tested for valid: " + valid);
 			} while (!valid);
 
 		}
 
-		System.out.println("sending response to player " + player.getUsername() + ": " + card);
+		if(valid)
+			feedback = JSONIngameAttributes.VALID;
+		
+		player.removeCard(card);
 		sendResponseToPlayer(player, card, feedback);
 
 		return card;
@@ -93,7 +100,6 @@ public class MoveCoordinator {
 			String move = player.readMessage();
 			JSONObject json2 = new JSONObject(move);
 			String action = json2.getString(JSONActionsE.EVENT.name());
-			System.out.println(move);
 			if (action.equals(JSONEventsE.MAKEMOVE.name())) {
 				if (json2.has((JSONEventsE.MAKEMOVE.name()))) {
 					if (json2.getString(JSONEventsE.MAKEMOVE.name()).equals(JSONIngameAttributes.CARD.name())) {

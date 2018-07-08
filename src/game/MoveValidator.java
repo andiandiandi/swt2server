@@ -1,5 +1,6 @@
 package game;
 
+import entities.Card;
 import entities.Player;
 
 public class MoveValidator {

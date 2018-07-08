@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import game.Card;
 import server.ClientWorker;
 
 public class Player implements Comparable<Player> {
@@ -42,6 +41,7 @@ public class Player implements Comparable<Player> {
 		
 		if(playerCards.contains(new Card(SymbolE.KREUZ,WertigkeitE.DAME,true))){
 			re = true;
+			System.out.println("PLAYER: " + getUsername() + " is re: " + re);	
 		}
 	}
 

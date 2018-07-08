@@ -2,15 +2,25 @@ package game;
 
 import java.util.List;
 
+import entities.Card;
+
 public class NormalTrumpfState extends TrumpfState {
 
 	@Override
 	public boolean validate(Card newCard, Card compareToPlayedCard, List<Card> playerDeck) {
 
+		System.out.println("comparecard: " + compareToPlayedCard + "\nnew Card: " + newCard );
+		
+		
+		//compare : koenig kreuz
+		//new: 		zehn kreuz
+		
 		if (compareToPlayedCard.isTrumpf()) {
 
-			if (newCard.isTrumpf())
+			if (newCard.isTrumpf()){
+				System.out.println("BEIDE TRUMPF;ANGENOMMEN");
 				return true;
+			}
 			else {
 
 				boolean found = false;
@@ -22,10 +32,14 @@ public class NormalTrumpfState extends TrumpfState {
 					}
 				}
 
-				if (found)
+				if (found){
+					System.out.println("COMPARE IST TRUMPF;NEWCARD IST KEIN TRUMPF;ANGENOMMEN");
 					return false;
-				else
+				}
+				else{
+					System.out.println("COMPARE IST TRUMPF;NEWCARD IST KEIN TRUMPF;NICHT ANGENOMMEN");
 					return true;
+				}
 
 			}
 
@@ -37,25 +51,35 @@ public class NormalTrumpfState extends TrumpfState {
 			if (newCard.isTrumpf()) {
 
 				for (Card temp : playerDeck) {
-					if (!temp.isTrumpf() && temp.getSymbol() == compareToPlayedCard.getSymbol())
+					if (!temp.isTrumpf() && temp.getSymbol() == compareToPlayedCard.getSymbol()){
+						System.out.println("TEMP GEFUNDEN! : " + temp);
+						System.out.println("NEWCARD IST TRUMPF; COMPARE IST KEIN TRUMPF");
 						return false;
+					}
 
 				}
 				
+				System.out.println("ANGENOMMEN1");
 				return true;
 			}
 
 			// compare kein trumpf und newcard kein trumpf
-			if (newCard.getSymbol() == compareToPlayedCard.getSymbol())
+			
+			if (newCard.getSymbol() == compareToPlayedCard.getSymbol()){
+				System.out.println("KEIN TRUMPF; SYMBOL STIMMT ÜBEREIN;ANGENOMMEN");
 				return true;
+			}
 
 			if(!newCard.isTrumpf()){
 				
 				for(Card temp : playerDeck){
-					if (!temp.isTrumpf() && temp.getSymbol() == compareToPlayedCard.getSymbol())
+					if (!temp.isTrumpf() && temp.getSymbol() == compareToPlayedCard.getSymbol()){
+						System.out.println("KEIN TRUMPF UND IM DECK NICHTS GEFUNDEN;NICHT ANGENOMMEN");
 						return false;
+					}
 				}
 				
+				System.out.println("ANGENOMMEN2");
 				return true;
 				
 			}

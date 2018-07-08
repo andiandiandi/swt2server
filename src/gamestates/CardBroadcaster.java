@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import entities.Card;
 import entities.CardE;
 import entities.Player;
-import game.Card;
 import server.JSONActionsE;
 import server.JSONEventsE;
 import server.JSONIngameAttributes;

@@ -21,7 +21,7 @@ import storage.Database;
 
 public class GameSession implements Runnable {
 
-	private static final int ROUNDS = 10;
+	private static final int ROUNDS = 4;
 
 	private CardGame cardGame;
 
@@ -76,7 +76,8 @@ public class GameSession implements Runnable {
 
 		// spielauswertung (wer hat gewonnen)
 		// stiche auswerten etc.
-		List<Player> gameWinner = cardGame.calculateWinner();
+		Map<Player,Integer> gameWinner = cardGame.calculateWinner();
+		
 		
 		//notify players 
 		notifyGameWinner(gameWinner);
@@ -86,14 +87,21 @@ public class GameSession implements Runnable {
 
 	}
 
-	private void notifyGameWinner(List<Player> gameWinner) {
+	private void notifyGameWinner(Map<Player,Integer> gameWinner) {
 		
 		JSONObject json = new JSONObject();
+		JSONObject score_data = null;
 		JSONArray winnerJSON = new JSONArray();
 		
-		for(Player player : gameWinner){
-			winnerJSON.put(player.getUsername());			
+		
+		for(Player player : gameWinner.keySet()){
+			score_data = new JSONObject();
+			score_data.put("player", player.getUsername());
+			score_data.put("score", gameWinner.get(player));
+			winnerJSON.put(score_data);
 		}
+		
+		
 		
 		json.put(JSONActionsE.EVENT.name(), JSONEventsE.GAMEWINNER.name());
 		json.put(JSONEventsE.GAMEWINNER.name(), winnerJSON);

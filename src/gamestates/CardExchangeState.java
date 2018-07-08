@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import entities.Card;
 import entities.CardE;
 import entities.Player;
 import entities.PlayerComparator;
 import entities.SymbolE;
 import entities.WertigkeitE;
-import game.Card;
 import game.CardGame;
 import game.MoveCoordinator;
 import server.JSONActionsE;

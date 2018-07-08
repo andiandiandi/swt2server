@@ -4,10 +4,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeSet;
 
+import entities.Card;
 import entities.Player;
 import entities.SymbolE;
 import entities.WertigkeitE;
-import game.Card;
 
 public class NormalCalculationMode extends CalculationMode {
 
@@ -30,7 +30,6 @@ public class NormalCalculationMode extends CalculationMode {
 		winner = it.next();
 		winnerCard = roundSpecificCards.get(winner);
 		while (it.hasNext()) {
-			System.out.println(winner.getUsername());
 			Player temp = it.next();
 			Card tempCard = roundSpecificCards.get(temp);
 			// Trumpf schlägt Fehl

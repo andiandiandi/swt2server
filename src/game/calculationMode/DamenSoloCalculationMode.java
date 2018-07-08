@@ -3,9 +3,9 @@ package game.calculationMode;
 import java.util.Iterator;
 import java.util.Map;
 
+import entities.Card;
 import entities.Player;
 import entities.WertigkeitE;
-import game.Card;
 
 /**
  * Nur Dame ist Trumpf, rest wird eingereiht

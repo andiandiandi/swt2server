@@ -3,8 +3,8 @@ package game.calculationMode;
 import java.util.Iterator;
 import java.util.Map;
 
+import entities.Card;
 import entities.Player;
-import game.Card;
 
 /**
  * Keine Trümpfe oder Trumpffarben

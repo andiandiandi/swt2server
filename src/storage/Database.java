@@ -66,10 +66,11 @@ public class Database {
 		Spiel spiel = new Spiel();
 
 		for (Player p : playerList.keySet()) {
-			PunkteStand temp = new PunkteStand();
-			temp.setSpielerID(p.getUsername());
-			temp.setPunkte(playerList.get(p));
-			spiel.add(temp);
+			PunkteStand punktestand = new PunkteStand();
+			punktestand.setSpielerID(p.getUsername());
+			punktestand.setPunkte(playerList.get(p));
+			System.out.println(punktestand);
+			spiel.add(punktestand);
 		}
 
 		em.persist(spiel);

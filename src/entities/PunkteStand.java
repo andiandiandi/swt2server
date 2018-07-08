@@ -45,6 +45,10 @@ public class PunkteStand {
 		this.punkte = punkte;
 	}
 	
+	@Override
+	public String toString() {
+		return "Spieler: " + username + " hat Punkte: " + punkte;
+	}
 	
 	
 }

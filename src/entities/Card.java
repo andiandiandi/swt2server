@@ -1,7 +1,4 @@
-package game;
-
-import entities.SymbolE;
-import entities.WertigkeitE;
+package entities;
 
 public class Card implements Comparable<Card> {
 

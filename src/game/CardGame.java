@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import entities.Card;
 import entities.GamemodeE;
 import entities.Player;
 import entities.SymbolE;
@@ -40,10 +41,6 @@ public class CardGame {
 		gameMode = GameMode.getInstance();
 	}
 
-	public void updateCardGame() {
-
-	}
-
 
 	Map<Player, Integer> getStichePoints() {
 
@@ -55,16 +52,6 @@ public class CardGame {
 		return points;
 	}
 	
-	Map<Player, Integer> getStiche() {
-
-		HashMap<Player, Integer> temp = new HashMap<Player, Integer>();
-		int i = 1;
-
-		for (Player p : playerList)
-			temp.put(p, 100 + i++);
-
-		return temp;
-	}
 
 	/**
 	 * Mischt das Kartenspiel
@@ -79,9 +66,9 @@ public class CardGame {
 			for (int j = 0; j < 10; j++) {
 				// Hat er ein Schweinchen?
 				if (playerCards.contains(new Card(SymbolE.KARO, WertigkeitE.ASS, true))
-						&& cards.get(i).getWertigkeit() == WertigkeitE.ASS
-						&& cards.get(i).getSymbol() == SymbolE.KARO) {
-					cards.get(i).setSchweinchen(true);
+						&& cards.get(j).getWertigkeit() == WertigkeitE.ASS
+						&& cards.get(j).getSymbol() == SymbolE.KARO) {
+					cards.get(j).setSchweinchen(true);
 					for (Card c : playerCards) {
 						if (c.getWertigkeit() == WertigkeitE.ASS && c.getSymbol() == SymbolE.KARO) {
 							c.setSchweinchen(true);
@@ -89,10 +76,6 @@ public class CardGame {
 					}
 				}
 				playerCards.add(cards.get(index++));
-				// Kreuzdame = RE
-				if (cards.get(i).getWertigkeit() == WertigkeitE.DAME && cards.get(i).getSymbol() == SymbolE.KREUZ) {
-					playerList.get(i).setRe(true);
-				}
 
 			}
 			playerList.get(i).setCards(new LinkedList<Card>(playerCards));
@@ -100,7 +83,7 @@ public class CardGame {
 
 	}
 
-	public List<Player> calculateWinner() {
+	public Map<Player,Integer> calculateWinner() {
 
 		Map<Player, Integer> points = getStichePoints();
 
@@ -116,22 +99,22 @@ public class CardGame {
 					contra += points.get(player);
 				}
 			}
-
+			//gamemode
 		} else {
 
 		}
 
-		List<Player> winner = new LinkedList<Player>();
+		Map<Player,Integer> winner = new HashMap<Player,Integer>();
 
 		if (re > contra) {
 			for (Player winnerPlayer : points.keySet()) {
 				if (winnerPlayer.isRe())
-					winner.add(winnerPlayer);
+					winner.put(winnerPlayer,points.get(winnerPlayer));
 			}
 		} else {
 			for (Player winnerPlayer : points.keySet()) {
 				if (!winnerPlayer.isRe())
-					winner.add(winnerPlayer);
+					winner.put(winnerPlayer,points.get(winnerPlayer));
 			}
 		}
 
@@ -167,6 +150,8 @@ public class CardGame {
 	public Player evaluateRound() {
 
 		Player to_return = gameMode.evaluateRound();
+		assignStiche(to_return);
+		
 		return to_return;
 
 	}

@@ -1,7 +1,7 @@
 package game.calculationMode;
 
+import entities.Card;
 import entities.Player;
-import game.Card;
 
 public abstract class CalculationMode {
 	

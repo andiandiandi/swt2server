@@ -6,9 +6,9 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import entities.Card;
 import entities.CardE;
 import entities.Player;
-import game.Card;
 import game.CardGame;
 import server.JSONActionsE;
 import server.JSONAttributesE;
@@ -44,6 +44,7 @@ public class ShuffleState extends GameSessionState {
 				cards.put(CardE.WERTIGKEIT.name(), card.getWertigkeit().name());
 				cards.put(CardE.SYMBOL.name(), card.getSymbol().name());
 				cards.put(CardE.TRUMPF.name(), card.isTrumpf());
+				cards.put(CardE.SCHWEINCHEN.name(), card.isSchweinchen());
 				
 				jsonArr.put(cards);
 			}
