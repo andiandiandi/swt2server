@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import entities.Card;
+import entities.GameWinnerObject;
 import entities.GamemodeE;
 import entities.Player;
 import entities.SymbolE;
@@ -83,7 +84,7 @@ public class CardGame {
 
 	}
 
-	public Map<Player,Integer> calculateWinner() {
+	public GameWinnerObject calculateWinner() {
 
 		Map<Player, Integer> points = getStichePoints();
 
@@ -104,21 +105,27 @@ public class CardGame {
 
 		}
 
-		Map<Player,Integer> winner = new HashMap<Player,Integer>();
-
+		
+		GameWinnerObject gwo = new GameWinnerObject();
+		
+		
 		if (re > contra) {
-			for (Player winnerPlayer : points.keySet()) {
-				if (winnerPlayer.isRe())
-					winner.put(winnerPlayer,points.get(winnerPlayer));
+			for (Player player : points.keySet()) {
+				if (player.isRe())
+					gwo.addWinner(player, points.get(player));
+				else
+					gwo.addLoser(player, points.get(player));
 			}
 		} else {
-			for (Player winnerPlayer : points.keySet()) {
-				if (!winnerPlayer.isRe())
-					winner.put(winnerPlayer,points.get(winnerPlayer));
+			for (Player player : points.keySet()) {
+				if (!player.isRe())
+					gwo.addWinner(player, points.get(player));
+				else
+					gwo.addLoser(player, points.get(player));
 			}
 		}
 
-		return winner;
+		return gwo;
 
 	}
 

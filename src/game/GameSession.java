@@ -7,6 +7,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import entities.GameWinnerObject;
 import entities.Player;
 import game.calculationMode.CalculationMode;
 import gamestates.CardExchangeState;
@@ -21,7 +22,7 @@ import storage.Database;
 
 public class GameSession implements Runnable {
 
-	private static final int ROUNDS = 4;
+	private static final int ROUNDS = 10;
 
 	private CardGame cardGame;
 
@@ -76,35 +77,49 @@ public class GameSession implements Runnable {
 
 		// spielauswertung (wer hat gewonnen)
 		// stiche auswerten etc.
-		Map<Player,Integer> gameWinner = cardGame.calculateWinner();
+		GameWinnerObject gameWinnerObject = cardGame.calculateWinner();
 		
 		
 		//notify players 
-		notifyGameWinner(gameWinner);
+		notifyGameWinner(gameWinnerObject);
 
 		// persistieren
-		persistPunktestand();
+		//persistPunktestand();
 
 	}
 
-	private void notifyGameWinner(Map<Player,Integer> gameWinner) {
+	private void notifyGameWinner(GameWinnerObject gwo) {
 		
 		JSONObject json = new JSONObject();
-		JSONObject score_data = null;
-		JSONArray winnerJSON = new JSONArray();
+		JSONObject score_data = new JSONObject();
+		JSONObject winnerJSON = new JSONObject();
+		JSONObject loserJSON = new JSONObject();
+		JSONArray jsonArrWinner = new JSONArray();
+		JSONArray jsonArrLoser = new JSONArray();
 		
 		
-		for(Player player : gameWinner.keySet()){
-			score_data = new JSONObject();
-			score_data.put("player", player.getUsername());
-			score_data.put("score", gameWinner.get(player));
-			winnerJSON.put(score_data);
+		
+		for(Player p : gwo.getWinner().keySet()){
+			winnerJSON = new JSONObject();
+			winnerJSON.put("name", p.getUsername());
+			winnerJSON.put("score", gwo.getWinner().get(p));
+			jsonArrWinner.put(winnerJSON);
 		}
+		
+		for(Player p : gwo.getLoser().keySet()){
+			loserJSON = new JSONObject();
+			loserJSON.put("name", p.getUsername());
+			loserJSON.put("score", gwo.getWinner().get(p));
+			jsonArrLoser.put(winnerJSON);
+		}
+		
+		score_data.put("winner", jsonArrWinner);
+		score_data.put("loser", jsonArrLoser);
 		
 		
 		
 		json.put(JSONActionsE.EVENT.name(), JSONEventsE.GAMEWINNER.name());
-		json.put(JSONEventsE.GAMEWINNER.name(), winnerJSON);
+		json.put(JSONEventsE.GAMEWINNER.name(), score_data);
 		String notification = json.toString();
 
 		for (Player p : playerList) {

@@ -46,7 +46,6 @@ public class MoveCoordinator {
 				notifyPlayerToMove(player, JSONIngameAttributes.INVALID);
 				card = getCardFromPlayer(player);
 				valid = testCardForValidity(card, player);
-				System.out.println(card + " tested for valid: " + valid);
 			} while (!valid);
 
 		}
@@ -100,6 +99,7 @@ public class MoveCoordinator {
 			String move = player.readMessage();
 			JSONObject json2 = new JSONObject(move);
 			String action = json2.getString(JSONActionsE.EVENT.name());
+			System.out.println(move);
 			if (action.equals(JSONEventsE.MAKEMOVE.name())) {
 				if (json2.has((JSONEventsE.MAKEMOVE.name()))) {
 					if (json2.getString(JSONEventsE.MAKEMOVE.name()).equals(JSONIngameAttributes.CARD.name())) {
@@ -121,7 +121,16 @@ public class MoveCoordinator {
 					}
 				}
 
+			}else if(action.equals(JSONEventsE.SHOWSCORE.name())){
+				JSONObject msg = new JSONObject();
+				msg.put(JSONActionsE.EVENT.name(), JSONEventsE.SHOWSCORE.name());
+				msg.put("score",100);
+				String notification = msg.toString();
+
+				player.sendMessage(notification);
+				
 			}
+			
 		} while (to_return == null);
 
 		return to_return;
