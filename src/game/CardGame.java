@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import entities.GamemodeE;
 import entities.Player;
 import game.calculationMode.CalculationMode;
 
@@ -30,6 +31,10 @@ public class CardGame {
 		roundSpecificCards = new HashMap<Player, Card>();
 		moveValidator = new MoveValidator();
 
+		for (Player p : playerList) {
+			stiche.put(p, new LinkedList());
+		}
+
 		gameMode = GameMode.getInstance();
 	}
 
@@ -37,15 +42,15 @@ public class CardGame {
 
 	}
 
-	Map<Player, Integer> getStiche() {
+	Map<Player, Integer> getStichePoints() {
+
+		Map<Player, Integer> points = new HashMap<Player, Integer>();
+
+		for (Player temp : playerList)
+			points.put(temp, calculatePoints(temp));
 		
-		HashMap<Player,Integer> temp = new HashMap<Player,Integer>();
-		int i=1;
+		return points;
 		
-		for(Player p : playerList)
-			temp.put(p, 100+i++);
-		
-		return temp;
 	}
 
 	/**
@@ -65,15 +70,63 @@ public class CardGame {
 		}
 	}
 
-	public Player calculateWinner() {
-		return null;
+	public List<Player> calculateWinner() {
+
+		Map<Player, Integer> points = getStichePoints();
+
+		int re = 0;
+		int contra = 0;
+
+		if (gameMode.getGameModeE() == GamemodeE.NORMAL) {
+
+			for (Player player : points.keySet()) {
+				if (player.isRe()) {
+					re += points.get(player);
+				} else {
+					contra += points.get(player);
+				}
+			}
+
+		} else {
+
+		}
+
+		List<Player> winner = new LinkedList<Player>();
+
+		if (re > contra) {
+			for (Player winnerPlayer : points.keySet()) {
+				if (winnerPlayer.isRe())
+					winner.add(winnerPlayer);
+			}
+		} else {
+			for (Player winnerPlayer : points.keySet()) {
+				if (!winnerPlayer.isRe())
+					winner.add(winnerPlayer);
+			}
+		}
+
+		return winner;
+
+	}
+
+	public int calculatePoints(Player player) {
+
+		List<Card> cardList = stiche.get(player);
+
+		int sum = 0;
+
+		for (Card card : cardList) {
+			sum += card.getWertigkeit().getNumVal();
+		}
+
+		return sum;
 	}
 
 	public boolean validatePlayedCard(Card card, Player player) {
 		return moveValidator.validatePlayedCard(card, player);
 	}
-	
-	public void resetMoveValidator(){
+
+	public void resetMoveValidator() {
 		moveValidator.reset();
 	}
 
@@ -84,8 +137,21 @@ public class CardGame {
 	public Player evaluateRound() {
 
 		Player to_return = gameMode.evaluateRound();
-		roundSpecificCards.clear();
 		return to_return;
+
+	}
+
+	public void assignStiche(Player player) {
+
+		List<Card> temp = new LinkedList<Card>();
+
+		for (Card card : roundSpecificCards.values()) {
+			temp.add(card);
+		}
+
+		stiche.get(player).addAll(temp);
+
+		roundSpecificCards.clear();
 
 	}
 

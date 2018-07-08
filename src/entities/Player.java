@@ -14,6 +14,8 @@ public class Player implements Comparable<Player>{
 
 	private List<Card> playerCards;
 	private Socket socket;
+	
+	private boolean re;
 
 	private ClientWorker cw;
 
@@ -26,6 +28,10 @@ public class Player implements Comparable<Player>{
 
 	public void setCards(List<Card> cards) {
 		playerCards = new LinkedList<Card>(cards);
+		
+		if(playerCards.contains(new Card(SymbolE.KREUZ,WertigkeitE.DAME,true))){
+			re = true;
+		}
 	}
 
 	public List<Card> getCards() {
@@ -49,14 +55,20 @@ public class Player implements Comparable<Player>{
 		return cw.readMessage();
 	}
 
-	
-	
 	public void setOrder(int order){
 		this.order=order;
 	}
 	
 	public int getOrder() {
 		return order;
+	}
+
+	public boolean isRe() {
+		return re;
+	}
+
+	public void setRe(boolean re) {
+		this.re = re;
 	}
 
 	@Override
@@ -67,7 +79,6 @@ public class Player implements Comparable<Player>{
 			return -1;
 		else return 0;
 	}
-
 	
 
 }

@@ -49,9 +49,6 @@ public class CardExchangeState extends GameSessionState {
 		Player player = cardGame.evaluateRound();
 		// playerlist sortieren
 		rotatePlayerList(player);
-		for(Player p : playerList){
-			System.out.println("rotate: " + p.getUsername());
-		}
 
 		try {
 			Thread.sleep(3000);
