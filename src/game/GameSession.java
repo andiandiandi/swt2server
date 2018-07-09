@@ -22,7 +22,7 @@ import storage.Database;
 
 public class GameSession implements Runnable {
 
-	private static final int ROUNDS = 10;
+	private static final int ROUNDS = 2;
 
 	private CardGame cardGame;
 
@@ -97,24 +97,21 @@ public class GameSession implements Runnable {
 		JSONArray jsonArrWinner = new JSONArray();
 		JSONArray jsonArrLoser = new JSONArray();
 		
-		
-		
-		for(Player p : gwo.getWinner().keySet()){
-			winnerJSON = new JSONObject();
-			winnerJSON.put("name", p.getUsername());
-			winnerJSON.put("score", gwo.getWinner().get(p));
-			jsonArrWinner.put(winnerJSON);
+		for(Player p : gwo.getWinner()){
+			jsonArrWinner.put(p.getUsername());			
 		}
+		winnerJSON.put("score", gwo.getWinnerScore());
+		winnerJSON.put("player", jsonArrWinner);
 		
-		for(Player p : gwo.getLoser().keySet()){
-			loserJSON = new JSONObject();
-			loserJSON.put("name", p.getUsername());
-			loserJSON.put("score", gwo.getWinner().get(p));
-			jsonArrLoser.put(winnerJSON);
+		for(Player p : gwo.getLoser()){
+			jsonArrLoser.put(p.getUsername());			
 		}
+		loserJSON.put("score", gwo.getWinnerScore());
+		loserJSON.put("player", jsonArrLoser);
 		
-		score_data.put("winner", jsonArrWinner);
-		score_data.put("loser", jsonArrLoser);
+		
+		score_data.put("winner", winnerJSON);
+		score_data.put("loser", loserJSON);
 		
 		
 		

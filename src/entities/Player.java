@@ -41,7 +41,6 @@ public class Player implements Comparable<Player> {
 		
 		if(playerCards.contains(new Card(SymbolE.KREUZ,WertigkeitE.DAME,true))){
 			re = true;
-			System.out.println("PLAYER: " + getUsername() + " is re: " + re);	
 		}
 	}
 

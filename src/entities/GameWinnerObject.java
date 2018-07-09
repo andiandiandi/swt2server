@@ -1,32 +1,53 @@
 package entities;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class GameWinnerObject {
 
-	private Map<Player, Integer> winner;
-	private Map<Player, Integer> loser;
+	private List<Player> winner;
+	private List<Player> loser;
+	
+	private int score_winner = 0;
+	private int score_loser = 0;
 	
 	public GameWinnerObject() {
-		winner = new HashMap<Player,Integer>();
-		loser = new HashMap<Player,Integer>();
+		winner = new LinkedList<Player>();
+		loser = new LinkedList<Player>();
 	}
 
-	public void addWinner(Player player, Integer score) {
-		winner.put(player, score);
+	public void addWinner(Player player) {
+		winner.add(player);
 	}
 
-	public void addLoser(Player player, Integer score) {
-		loser.put(player, score);
+	public void addLoser(Player player) {
+		loser.add(player);
 	}
 
-	public Map<Player, Integer> getWinner() {
+	public List<Player> getWinner() {
 		return winner;
 	}
 
-	public Map<Player, Integer> getLoser() {
+	public List<Player> getLoser() {
 		return loser;
+	}
+	
+	public void setWinnerScore(int score){
+		score_winner = score;
+	}
+	
+	public void setLoserScore(int score){
+		score_loser = score;
+	}
+	
+	public int getWinnerScore(){
+		return score_winner;
+	}
+	
+	public int getLoserScore(){
+		return score_loser;
 	}
 
 }

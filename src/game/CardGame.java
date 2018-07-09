@@ -112,17 +112,21 @@ public class CardGame {
 		if (re > contra) {
 			for (Player player : points.keySet()) {
 				if (player.isRe())
-					gwo.addWinner(player, points.get(player));
+					gwo.addWinner(player);
 				else
-					gwo.addLoser(player, points.get(player));
+					gwo.addLoser(player);
 			}
+			gwo.setWinnerScore(re);
+			gwo.setLoserScore(contra);
 		} else {
 			for (Player player : points.keySet()) {
 				if (!player.isRe())
-					gwo.addWinner(player, points.get(player));
+					gwo.addWinner(player);
 				else
-					gwo.addLoser(player, points.get(player));
+					gwo.addLoser(player);
 			}
+			gwo.setWinnerScore(contra);
+			gwo.setLoserScore(re);
 		}
 
 		return gwo;
